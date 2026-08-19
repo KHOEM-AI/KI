@@ -165,3 +165,4 @@ Certificate #43 https://api2.sololearn.com/v2/certificates/CC-IGJZ5ICG/image/png
 Certificate #44 https://api2.sololearn.com/v2/certificates/CC-NIHNI6RW/image/png?t=639224739175951367
 Certificate #45 https://api2.sololearn.com/v2/certificates/CC-PKZFLGAF/image/png?t=639224766824092049
 Certificate #46 https://api2.sololearn.com/v2/certificates/CC-BXKK8SSV/image/png?t=639225729535120880
+Certificate​ #47 https://api2.sololearn.com/v2/certificates/CC-L8HOE7QV/image/png?t=639227517866924285
