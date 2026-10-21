@@ -1,5 +1,4 @@
 export const registry = {
-  anthropic: { target: "https://api.anthropic.com/v1/messages", keyEnv: "ANTHROPIC_API_KEY", extraHeaders: { "anthropic-version": "2023-06-01" } },
   qr:        { target: "https://api.qrserver.com/v1/create-qr-code/", keyEnv: null },
   nominatim: { target: "https://nominatim.openstreetmap.org/search", keyEnv: null },
   osrm:      { target: "https://router.project-osrm.org/route/v1/driving/", keyEnv: null },

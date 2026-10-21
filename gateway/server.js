@@ -4,33 +4,6 @@ const app = express();
 app.use(express.json({ limit: "20mb" }));
 
 
-// ===== Anthropic proxy: key នៅ gateway តែប៉ុណ្ណោះ =====
-const A_MODEL = "claude-sonnet-4-6";
-let aCount = 0;
-setInterval(() => { aCount = 0; }, 60000);
-app.use("/api/anthropic", (req, res, next) => {
-  const o = req.get("origin") || "";
-  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o)) res.set("Access-Control-Allow-Origin", o);
-  res.set("Access-Control-Allow-Headers", "Content-Type");
-  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
-});
-app.post("/api/anthropic", async (req, res) => {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return res.status(503).json({ error: "ANTHROPIC_API_KEY មិនទាន់កំណត់" });
-  if (++aCount > 30) return res.status(429).json({ error: "ច្រើនពេក សូមរង់ចាំ" });
-  const b = req.body || {};
-  try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" },
-      body: JSON.stringify({ model: A_MODEL, max_tokens: Math.min(Number(b.max_tokens) || 1024, 1024), messages: b.messages }),
-    });
-    res.status(r.status).set("Content-Type", "application/json").send(await r.text());
-  } catch (e) { res.status(502).json({ error: String(e) }); }
-});
-
 // ===== ការពារ៖ token + allowlist =====
 const GATEWAY_TOKEN = process.env.GATEWAY_TOKEN || "";
 const SAFE = [
