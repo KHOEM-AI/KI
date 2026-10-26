@@ -1,0 +1,25 @@
+{
+ "version": 1,
+ "statuses": [
+  {
+   "id": "online",
+   "km": "កំពុងដំណើរការ",
+   "en": "Online"
+  },
+  {
+   "id": "warning",
+   "km": "ព្រមាន",
+   "en": "Warning"
+  },
+  {
+   "id": "offline",
+   "km": "គ្មានការតភ្ជាប់",
+   "en": "Offline"
+  },
+  {
+   "id": "maintenance",
+   "km": "កំពុងថែទាំ",
+   "en": "Maintenance"
+  }
+ ]
+}
