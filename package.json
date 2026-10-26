@@ -1,0 +1,1 @@
+{"name":"ki","private":true,"type":"module","scripts":{"validate":"node scripts/validate.mjs","add-devices":"node scripts/add-devices.mjs"}}

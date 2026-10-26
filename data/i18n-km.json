@@ -1,11 +1,11 @@
 {
- "ki.devices": "ឧបករណ៍",
- "ki.apis": "សេវា API",
- "ki.ai_apps": "កម្មវិធី AI",
- "ki.on": "បើក",
- "ki.off": "បិទ",
- "ki.online": "តភ្ជាប់",
- "ki.offline": "ផ្តាច់",
- "ki.location": "ទីតាំង",
- "ki.category": "ប្រភេទ"
+  "ki.devices": "ឧបករណ៍",
+  "ki.apis": "សេវា API",
+  "ki.ai_apps": "កម្មវិធី AI",
+  "ki.on": "បើក",
+  "ki.off": "បិទ",
+  "ki.online": "តភ្ជាប់",
+  "ki.offline": "ផ្តាច់",
+  "ki.location": "ទីតាំង",
+  "ki.category": "ប្រភេទ"
 }

@@ -1,3 +1,12 @@
-{"version":1,"apps":[
-{"id":"app-001","name":"Example AI app","api_id":"example-ai","url":"","enabled":false}
-]}
+{
+  "version": 1,
+  "apps": [
+    {
+      "id": "khoem-ai-ui",
+      "name": "KHOEM AI",
+      "api_id": "ai-backend",
+      "url": "http://127.0.0.1:5175",
+      "enabled": true
+    }
+  ]
+}

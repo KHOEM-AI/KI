@@ -1,109 +1,109 @@
 {
- "version": 1,
- "apis": [
-  {
-   "id": "ksv-gateway",
-   "name": "KSV gateway",
-   "type": "gateway",
-   "base_url": "http://127.0.0.1:4000",
-   "health": "/api",
-   "auth": "header",
-   "env_key": "GATEWAY_TOKEN",
-   "enabled": true,
-   "auth_header": "x-gateway-token",
-   "routes": [
-    "/api",
-    "/api/chat"
-   ],
-   "verified": "2026-10-26",
-   "status_seen": 200
-  },
-  {
-   "id": "khoem-ai-api",
-   "name": "KHOEM_AI (language and localization)",
-   "type": "localization",
-   "base_url": "http://127.0.0.1:8790",
-   "health": "/health",
-   "auth": "none",
-   "env_key": "",
-   "enabled": true,
-   "routes": [
-    "/api/languages",
-    "/api/locales",
-    "/api/translate",
-    "/api/coverage"
-   ],
-   "note": "GET routes verified 2026-10-26 (HTTP 200); POST /api/translate not tested",
-   "verified": "2026-10-26",
-   "status_seen": 200,
-   "verified_routes": [
-    "/health",
-    "/api/languages",
-    "/api/locales",
-    "/api/coverage",
-    "/api/translate"
-   ]
-  },
-  {
-   "id": "ai-backend",
-   "name": "KHOEM AI backend",
-   "type": "ai",
-   "base_url": "http://127.0.0.1:8787",
-   "health": "/api/health",
-   "auth": "header",
-   "env_key": "KHOEM_API_KEY",
-   "enabled": true,
-   "auth_header": "x-api-key",
-   "routes_url": "/api/routes/all",
-   "repo": "KHOEM-AI/AI",
-   "verified": "2026-10-26",
-   "status_seen": 200
-  },
-  {
-   "id": "ai-ui",
-   "name": "KHOEM AI UI",
-   "type": "ui",
-   "base_url": "http://127.0.0.1:5175",
-   "health": "",
-   "auth": "none",
-   "env_key": "",
-   "enabled": true,
-   "repo": "KHOEM-AI/AI",
-   "verified": "2026-10-26",
-   "status_seen": 200
-  },
-  {
-   "id": "iqai-media",
-   "name": "IQ-AI media",
-   "type": "media",
-   "base_url": "http://127.0.0.1:8799/api/v1",
-   "health": "",
-   "auth": "bearer",
-   "env_key": "IQAI_TOKEN",
-   "enabled": true,
-   "note": "running; needs bearer token; AI processing endpoints return 501",
-   "verified": "2026-10-26",
-   "status_seen": 401
-  },
-  {
-   "id": "mqtt-broker",
-   "name": "MQTT broker (device telemetry)",
-   "type": "mqtt",
-   "base_url": "",
-   "health": "",
-   "auth": "",
-   "env_key": "MQTT_BROKER_URL",
-   "enabled": true
-  },
-  {
-   "id": "ksv-api",
-   "name": "KSV platform API",
-   "type": "platform",
-   "base_url": "http://127.0.0.1:3000/api/v1",
-   "auth": "bearer",
-   "repo": "KHOEM-AI/KSV",
-   "note": "port 3000 from Postman guide, not verified",
-   "enabled": true
-  }
- ]
+  "version": 1,
+  "apis": [
+    {
+      "id": "ksv-gateway",
+      "name": "KSV gateway",
+      "type": "gateway",
+      "base_url": "http://127.0.0.1:4000",
+      "health": "/api",
+      "auth": "header",
+      "env_key": "GATEWAY_TOKEN",
+      "enabled": true,
+      "auth_header": "x-gateway-token",
+      "routes": [
+        "/api",
+        "/api/chat"
+      ],
+      "verified": "2026-10-26",
+      "status_seen": 200
+    },
+    {
+      "id": "khoem-ai-api",
+      "name": "KHOEM_AI (language and localization)",
+      "type": "localization",
+      "base_url": "http://127.0.0.1:8790",
+      "health": "/health",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "routes": [
+        "/api/languages",
+        "/api/locales",
+        "/api/translate",
+        "/api/coverage"
+      ],
+      "note": "GET routes verified 2026-10-26 (HTTP 200); POST /api/translate not tested",
+      "verified": "2026-10-26",
+      "status_seen": 200,
+      "verified_routes": [
+        "/health",
+        "/api/languages",
+        "/api/locales",
+        "/api/coverage",
+        "/api/translate"
+      ]
+    },
+    {
+      "id": "ai-backend",
+      "name": "KHOEM AI backend",
+      "type": "ai",
+      "base_url": "http://127.0.0.1:8787",
+      "health": "/api/health",
+      "auth": "header",
+      "env_key": "KHOEM_API_KEY",
+      "enabled": true,
+      "auth_header": "x-api-key",
+      "routes_url": "/api/routes/all",
+      "repo": "KHOEM-AI/AI",
+      "verified": "2026-10-26",
+      "status_seen": 200
+    },
+    {
+      "id": "ai-ui",
+      "name": "KHOEM AI UI",
+      "type": "ui",
+      "base_url": "http://127.0.0.1:5175",
+      "health": "",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "repo": "KHOEM-AI/AI",
+      "verified": "2026-10-26",
+      "status_seen": 200
+    },
+    {
+      "id": "iqai-media",
+      "name": "IQ-AI media",
+      "type": "media",
+      "base_url": "http://127.0.0.1:8799/api/v1",
+      "health": "",
+      "auth": "bearer",
+      "env_key": "IQAI_TOKEN",
+      "enabled": true,
+      "note": "running; needs bearer token; AI processing endpoints return 501",
+      "verified": "2026-10-26",
+      "status_seen": 401
+    },
+    {
+      "id": "mqtt-broker",
+      "name": "MQTT broker (device telemetry)",
+      "type": "mqtt",
+      "base_url": "",
+      "health": "",
+      "auth": "",
+      "env_key": "MQTT_BROKER_URL",
+      "enabled": true
+    },
+    {
+      "id": "ksv-api",
+      "name": "KSV platform API",
+      "type": "platform",
+      "base_url": "http://127.0.0.1:3000/api/v1",
+      "auth": "bearer",
+      "repo": "KHOEM-AI/KSV",
+      "note": "port 3000 from Postman guide, not verified",
+      "enabled": true
+    }
+  ]
 }

@@ -1,1 +1,13 @@
-{"version":1,"protocols":["mqtt","http","wifi","ble","zigbee","ir","rf433","serial"]}
+{
+  "version": 1,
+  "protocols": [
+    "mqtt",
+    "http",
+    "wifi",
+    "ble",
+    "zigbee",
+    "ir",
+    "rf433",
+    "serial"
+  ]
+}

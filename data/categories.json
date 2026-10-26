@@ -1,85 +1,85 @@
 {
- "version": 1,
- "categories": [
-  {
-   "id": "relay",
-   "km": "រីឡេ",
-   "en": "Relay"
-  },
-  {
-   "id": "switch",
-   "km": "កុងតាក់",
-   "en": "Switch"
-  },
-  {
-   "id": "light",
-   "km": "ភ្លើង",
-   "en": "Light"
-  },
-  {
-   "id": "sensor",
-   "km": "សេនស័រ",
-   "en": "Sensor"
-  },
-  {
-   "id": "controller",
-   "km": "ឧបករណ៍បញ្ជា",
-   "en": "Controller"
-  },
-  {
-   "id": "camera",
-   "km": "កាមេរ៉ា",
-   "en": "Camera"
-  },
-  {
-   "id": "remote-ir",
-   "km": "រីម៉ូត IR",
-   "en": "IR remote"
-  },
-  {
-   "id": "lock",
-   "km": "សោ",
-   "en": "Lock"
-  },
-  {
-   "id": "fan",
-   "km": "កង្ហារ",
-   "en": "Fan"
-  },
-  {
-   "id": "ac",
-   "km": "ម៉ាស៊ីនត្រជាក់",
-   "en": "Air conditioner"
-  },
-  {
-   "id": "plug",
-   "km": "ព្រីសឆ្លាត",
-   "en": "Smart plug"
-  },
-  {
-   "id": "speaker",
-   "km": "ឧបករណ៍សម្លេង",
-   "en": "Speaker"
-  },
-  {
-   "id": "industrial",
-   "km": "ឧស្សាហកម្ម",
-   "en": "Industrial"
-  },
-  {
-   "id": "vehicle",
-   "km": "យានយន្ត",
-   "en": "Vehicle"
-  },
-  {
-   "id": "network",
-   "km": "បណ្តាញ",
-   "en": "Network"
-  },
-  {
-   "id": "other",
-   "km": "ផ្សេងៗ",
-   "en": "Other"
-  }
- ]
+  "version": 1,
+  "categories": [
+    {
+      "id": "relay",
+      "km": "រីឡេ",
+      "en": "Relay"
+    },
+    {
+      "id": "switch",
+      "km": "កុងតាក់",
+      "en": "Switch"
+    },
+    {
+      "id": "light",
+      "km": "ភ្លើង",
+      "en": "Light"
+    },
+    {
+      "id": "sensor",
+      "km": "សេនស័រ",
+      "en": "Sensor"
+    },
+    {
+      "id": "controller",
+      "km": "ឧបករណ៍បញ្ជា",
+      "en": "Controller"
+    },
+    {
+      "id": "camera",
+      "km": "កាមេរ៉ា",
+      "en": "Camera"
+    },
+    {
+      "id": "remote-ir",
+      "km": "រីម៉ូត IR",
+      "en": "IR remote"
+    },
+    {
+      "id": "lock",
+      "km": "សោ",
+      "en": "Lock"
+    },
+    {
+      "id": "fan",
+      "km": "កង្ហារ",
+      "en": "Fan"
+    },
+    {
+      "id": "ac",
+      "km": "ម៉ាស៊ីនត្រជាក់",
+      "en": "Air conditioner"
+    },
+    {
+      "id": "plug",
+      "km": "ព្រីសឆ្លាត",
+      "en": "Smart plug"
+    },
+    {
+      "id": "speaker",
+      "km": "ឧបករណ៍សម្លេង",
+      "en": "Speaker"
+    },
+    {
+      "id": "industrial",
+      "km": "ឧស្សាហកម្ម",
+      "en": "Industrial"
+    },
+    {
+      "id": "vehicle",
+      "km": "យានយន្ត",
+      "en": "Vehicle"
+    },
+    {
+      "id": "network",
+      "km": "បណ្តាញ",
+      "en": "Network"
+    },
+    {
+      "id": "other",
+      "km": "ផ្សេងៗ",
+      "en": "Other"
+    }
+  ]
 }

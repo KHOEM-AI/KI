@@ -1,68 +1,68 @@
 {
- "version": 1,
- "services": {
-  "ai-backend": {
-   "public": [
-    "/api/health",
-    "/api",
-    "/api/models",
-    "/api/status",
-    "/api/control",
-    "/api/chat",
-    "/api/registry",
-    "/api/routes/all"
-   ],
-   "protected": [
-    "/api/scan",
-    "/api/check",
-    "/api/find",
-    "/api/funcs",
-    "/api/read",
-    "/api/learn",
-    "/api/learned",
-    "/api/forget",
-    "/api/audit",
-    "/api/tasks",
-    "/api/metrics",
-    "/api/budget",
-    "/api/circuit",
-    "/api/approvals",
-    "/api/code",
-    "/api/patch",
-    "/api/sandbox",
-    "/api/verify",
-    "/api/rollback",
-    "/api/system",
-    "/api/goals",
-    "/api/plans",
-    "/api/ideas",
-    "/api/experiments",
-    "/api/khoem",
-    "/api/lexicon",
-    "/api/library",
-    "/api/model",
-    "/api/tools",
-    "/api/agent",
-    "/api/characters",
-    "/api/assets",
-    "/api/storyboards",
-    "/api/shotlist"
-   ]
-  },
-  "ksv-api": {
-   "groups": [
-    "/api/v1/auth",
-    "/api/v1/users",
-    "/api/v1/orgs",
-    "/api/v1/devices",
-    "/api/v1/discovery",
-    "/api/v1/commands",
-    "/api/v1/gateways",
-    "/api/v1/protocols",
-    "/api/v1/safety",
-    "/api/v1/events",
-    "/api/v1/sessions"
-   ]
+  "version": 1,
+  "services": {
+    "ai-backend": {
+      "public": [
+        "/api/health",
+        "/api",
+        "/api/models",
+        "/api/status",
+        "/api/control",
+        "/api/chat",
+        "/api/registry",
+        "/api/routes/all"
+      ],
+      "protected": [
+        "/api/scan",
+        "/api/check",
+        "/api/find",
+        "/api/funcs",
+        "/api/read",
+        "/api/learn",
+        "/api/learned",
+        "/api/forget",
+        "/api/audit",
+        "/api/tasks",
+        "/api/metrics",
+        "/api/budget",
+        "/api/circuit",
+        "/api/approvals",
+        "/api/code",
+        "/api/patch",
+        "/api/sandbox",
+        "/api/verify",
+        "/api/rollback",
+        "/api/system",
+        "/api/goals",
+        "/api/plans",
+        "/api/ideas",
+        "/api/experiments",
+        "/api/khoem",
+        "/api/lexicon",
+        "/api/library",
+        "/api/model",
+        "/api/tools",
+        "/api/agent",
+        "/api/characters",
+        "/api/assets",
+        "/api/storyboards",
+        "/api/shotlist"
+      ]
+    },
+    "ksv-api": {
+      "groups": [
+        "/api/v1/auth",
+        "/api/v1/users",
+        "/api/v1/orgs",
+        "/api/v1/devices",
+        "/api/v1/discovery",
+        "/api/v1/commands",
+        "/api/v1/gateways",
+        "/api/v1/protocols",
+        "/api/v1/safety",
+        "/api/v1/events",
+        "/api/v1/sessions"
+      ]
+    }
   }
- }
 }

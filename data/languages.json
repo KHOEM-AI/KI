@@ -1,14 +1,14 @@
 {
- "version": 1,
- "source": "KHOEM_AI",
- "default": "km",
- "use": [
-  "km",
-  "en"
- ],
- "files": {
-  "km": "i18n-km.json",
-  "en": "i18n-en.json"
- },
- "note": "Language registry lives in KHOEM_AI. KI only lists the codes it uses."
+  "version": 1,
+  "source": "KHOEM_AI",
+  "default": "km",
+  "use": [
+    "km",
+    "en"
+  ],
+  "files": {
+    "km": "i18n-km.json",
+    "en": "i18n-en.json"
+  },
+  "note": "Language registry lives in KHOEM_AI. KI only lists the codes it uses."
 }
