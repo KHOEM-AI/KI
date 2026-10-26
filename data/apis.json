@@ -16,7 +16,8 @@
         "/api/chat"
       ],
       "verified": "2026-10-26",
-      "status_seen": 200
+      "status_seen": 200,
+      "checked": "2026-10-26"
     },
     {
       "id": "khoem-ai-api",
@@ -42,7 +43,8 @@
         "/api/locales",
         "/api/coverage",
         "/api/translate"
-      ]
+      ],
+      "checked": "2026-10-26"
     },
     {
       "id": "ai-backend",
@@ -57,7 +59,8 @@
       "routes_url": "/api/routes/all",
       "repo": "KHOEM-AI/AI",
       "verified": "2026-10-26",
-      "status_seen": 200
+      "status_seen": 200,
+      "checked": "2026-10-26"
     },
     {
       "id": "ai-ui",
@@ -70,7 +73,8 @@
       "enabled": true,
       "repo": "KHOEM-AI/AI",
       "verified": "2026-10-26",
-      "status_seen": 200
+      "status_seen": 200,
+      "checked": "2026-10-26"
     },
     {
       "id": "iqai-media",
@@ -83,7 +87,8 @@
       "enabled": true,
       "note": "running (401 without token on /media); routes from docs/API.md; AI processing returns 501",
       "verified": "2026-10-26",
-      "status_seen": 401
+      "status_seen": 200,
+      "checked": "2026-10-26"
     },
     {
       "id": "mqtt-broker",
@@ -104,7 +109,10 @@
       "auth": "bearer",
       "repo": "KHOEM-AI/KSV",
       "note": "port 3000 from .env; connection failed on 2026-10-26 (service not running); routes taken from source code, the README paths with /api/v1 do not match the code",
-      "enabled": true
+      "enabled": true,
+      "health": "/health",
+      "status_seen": 0,
+      "checked": "2026-10-26"
     }
   ]
 }
