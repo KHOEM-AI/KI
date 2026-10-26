@@ -25,6 +25,17 @@ for (const d of data['devices.json']?.devices ?? []) {
   if (!cats.has(d.category)) err('device ' + d.id + ': unknown category ' + d.category);
   if (d.protocol && !protos.has(d.protocol)) err('device ' + d.id + ': unknown protocol ' + d.protocol);
 }
+const dt = data['device-types.json'];
+if (dt) {
+  const doms = new Set(dt.domains.map(x => x.id));
+  const tids = ids(dt.types, 'device-types');
+  for (const x of dt.types) {
+    if (!cats.has(x.category)) err('type ' + x.id + ': unknown category ' + x.category);
+    if (!doms.has(x.domain)) err('type ' + x.id + ': unknown domain ' + x.domain);
+    if (!['low', 'medium', 'high'].includes(x.risk)) err('type ' + x.id + ': bad risk');
+  }
+  for (const d of data['devices.json']?.devices ?? []) if (d.type && !tids.has(d.type)) err('device ' + d.id + ': unknown type ' + d.type);
+}
 const idx = data['index.json']?.files ?? [];
 for (const f of files) if (f !== 'index.json' && !idx.includes(f)) err('not listed in index.json: ' + f);
 for (const f of idx) if (!files.includes(f)) err('index.json lists missing file: ' + f);

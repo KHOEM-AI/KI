@@ -1,0 +1,1262 @@
+{
+  "version": 1,
+  "note": "Catalog of device kinds, not individual devices. risk: high = needs safety check and approval in KSV. Khmer names are a first draft.",
+  "domains": [
+    {
+      "id": "home",
+      "km": "ផ្ទះ",
+      "en": "Home"
+    },
+    {
+      "id": "building",
+      "km": "អគារ",
+      "en": "Building"
+    },
+    {
+      "id": "industrial",
+      "km": "ឧស្សាហកម្ម",
+      "en": "Industrial"
+    },
+    {
+      "id": "vehicle",
+      "km": "យានយន្ត",
+      "en": "Vehicle"
+    },
+    {
+      "id": "agriculture",
+      "km": "កសិកម្ម",
+      "en": "Agriculture"
+    },
+    {
+      "id": "energy",
+      "km": "ថាមពល",
+      "en": "Energy"
+    },
+    {
+      "id": "network",
+      "km": "បណ្តាញ",
+      "en": "Network"
+    }
+  ],
+  "types": [
+    {
+      "id": "light-bulb",
+      "km": "អំពូលឆ្លាត",
+      "en": "Smart bulb",
+      "category": "light",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "dimming",
+        "color"
+      ]
+    },
+    {
+      "id": "led-strip",
+      "km": "ខ្សែភ្លើង LED",
+      "en": "LED strip",
+      "category": "light",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "dimming",
+        "color"
+      ]
+    },
+    {
+      "id": "ceiling-fan",
+      "km": "កង្ហារ",
+      "en": "Fan",
+      "category": "fan",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "speed"
+      ]
+    },
+    {
+      "id": "air-conditioner",
+      "km": "ម៉ាស៊ីនត្រជាក់",
+      "en": "Air conditioner",
+      "category": "ac",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "temperature",
+        "mode",
+        "speed"
+      ]
+    },
+    {
+      "id": "tv",
+      "km": "ទូរទស្សន៍",
+      "en": "TV",
+      "category": "display",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "volume",
+        "channel",
+        "input"
+      ]
+    },
+    {
+      "id": "projector",
+      "km": "ម៉ាស៊ីនបញ្ចាំងរូបភាព",
+      "en": "Projector",
+      "category": "display",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "input"
+      ]
+    },
+    {
+      "id": "bass-speaker",
+      "km": "ធុងបាស",
+      "en": "Subwoofer",
+      "category": "speaker",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "volume",
+        "bass"
+      ]
+    },
+    {
+      "id": "speaker",
+      "km": "ឧបករណ៍សម្លេង",
+      "en": "Speaker",
+      "category": "speaker",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "volume",
+        "input"
+      ]
+    },
+    {
+      "id": "amplifier",
+      "km": "អំភ្លី",
+      "en": "Amplifier",
+      "category": "speaker",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "volume",
+        "input"
+      ]
+    },
+    {
+      "id": "rice-cooker",
+      "km": "ឆ្នាំងបាយ",
+      "en": "Rice cooker",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "mode",
+        "timer",
+        "status"
+      ]
+    },
+    {
+      "id": "electric-kettle",
+      "km": "ឆ្នាំងស្ងោរទឹក",
+      "en": "Electric kettle",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "status"
+      ]
+    },
+    {
+      "id": "microwave",
+      "km": "ឡមីក្រូវ៉េវ",
+      "en": "Microwave",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "start_stop",
+        "timer"
+      ]
+    },
+    {
+      "id": "oven",
+      "km": "ឡដុត",
+      "en": "Oven",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "high",
+      "capabilities": [
+        "on_off",
+        "temperature",
+        "timer"
+      ]
+    },
+    {
+      "id": "induction-cooker",
+      "km": "ចង្ក្រានអគ្គិសនី",
+      "en": "Induction cooker",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "high",
+      "capabilities": [
+        "on_off",
+        "power",
+        "timer"
+      ]
+    },
+    {
+      "id": "refrigerator",
+      "km": "ទូទឹកកក",
+      "en": "Refrigerator",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "temperature",
+        "status"
+      ]
+    },
+    {
+      "id": "freezer",
+      "km": "ទូបង្កក",
+      "en": "Freezer",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "temperature",
+        "status"
+      ]
+    },
+    {
+      "id": "washing-machine",
+      "km": "ម៉ាស៊ីនបោកខោអាវ",
+      "en": "Washing machine",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "start_stop",
+        "mode",
+        "status"
+      ]
+    },
+    {
+      "id": "dryer",
+      "km": "ម៉ាស៊ីនសម្ងួតខោអាវ",
+      "en": "Dryer",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "start_stop",
+        "mode",
+        "status"
+      ]
+    },
+    {
+      "id": "dishwasher",
+      "km": "ម៉ាស៊ីនលាងចាន",
+      "en": "Dishwasher",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "start_stop",
+        "mode",
+        "status"
+      ]
+    },
+    {
+      "id": "water-heater",
+      "km": "ម៉ាស៊ីនកម្តៅទឹក",
+      "en": "Water heater",
+      "category": "appliance",
+      "domain": "home",
+      "risk": "high",
+      "capabilities": [
+        "on_off",
+        "temperature"
+      ]
+    },
+    {
+      "id": "robot-vacuum",
+      "km": "រ៉ូបូតបូមធូលី",
+      "en": "Robot vacuum",
+      "category": "robot",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "start_stop",
+        "status"
+      ]
+    },
+    {
+      "id": "air-purifier",
+      "km": "ម៉ាស៊ីនបន្សុទ្ធខ្យល់",
+      "en": "Air purifier",
+      "category": "climate",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "speed"
+      ]
+    },
+    {
+      "id": "humidifier",
+      "km": "ម៉ាស៊ីនបង្កើនសំណើម",
+      "en": "Humidifier",
+      "category": "climate",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off",
+        "humidity"
+      ]
+    },
+    {
+      "id": "heater",
+      "km": "ម៉ាស៊ីនកម្តៅ",
+      "en": "Heater",
+      "category": "climate",
+      "domain": "home",
+      "risk": "high",
+      "capabilities": [
+        "on_off",
+        "temperature"
+      ]
+    },
+    {
+      "id": "smart-plug",
+      "km": "ព្រីសឆ្លាត",
+      "en": "Smart plug",
+      "category": "plug",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "energy_meter",
+        "schedule"
+      ]
+    },
+    {
+      "id": "power-strip",
+      "km": "ព្រីសពហុរន្ធ",
+      "en": "Power strip",
+      "category": "plug",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off"
+      ]
+    },
+    {
+      "id": "relay-module",
+      "km": "ម៉ូឌុលរីឡេ",
+      "en": "Relay module",
+      "category": "relay",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "schedule"
+      ]
+    },
+    {
+      "id": "wall-switch",
+      "km": "កុងតាក់ជញ្ជាំង",
+      "en": "Wall switch",
+      "category": "switch",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "on_off"
+      ]
+    },
+    {
+      "id": "dimmer",
+      "km": "ឧបករណ៍បន្ថយភ្លើង",
+      "en": "Dimmer",
+      "category": "switch",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "dimming"
+      ]
+    },
+    {
+      "id": "curtain-motor",
+      "km": "ម៉ូទ័រវាំងនន",
+      "en": "Curtain motor",
+      "category": "motor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "open_close",
+        "position"
+      ]
+    },
+    {
+      "id": "ir-blaster",
+      "km": "ឧបករណ៍បញ្ជា IR",
+      "en": "IR blaster",
+      "category": "remote-ir",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "send_ir"
+      ]
+    },
+    {
+      "id": "doorbell",
+      "km": "កណ្តឹងទ្វារឆ្លាត",
+      "en": "Smart doorbell",
+      "category": "camera",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "video",
+        "notify"
+      ]
+    },
+    {
+      "id": "cctv",
+      "km": "កាមេរ៉ាសុវត្ថិភាព",
+      "en": "Security camera",
+      "category": "camera",
+      "domain": "building",
+      "risk": "medium",
+      "capabilities": [
+        "video",
+        "record"
+      ]
+    },
+    {
+      "id": "smart-lock",
+      "km": "សោឆ្លាត",
+      "en": "Smart lock",
+      "category": "lock",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "lock",
+        "unlock",
+        "audit"
+      ]
+    },
+    {
+      "id": "door-controller",
+      "km": "ឧបករណ៍បញ្ជាទ្វារ",
+      "en": "Door controller",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "lock",
+        "unlock",
+        "audit"
+      ]
+    },
+    {
+      "id": "gate-barrier",
+      "km": "របាំងទ្វារចូល",
+      "en": "Gate barrier",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "open_close"
+      ]
+    },
+    {
+      "id": "garage-door",
+      "km": "ទ្វារយានដ្ឋាន",
+      "en": "Garage door",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "open_close"
+      ]
+    },
+    {
+      "id": "roller-shutter",
+      "km": "ទ្វាររ៉ូឡូ",
+      "en": "Roller shutter",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "open_close"
+      ]
+    },
+    {
+      "id": "badge-reader",
+      "km": "ឧបករណ៍អានប័ណ្ណ",
+      "en": "Badge reader",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "read_badge",
+        "audit"
+      ]
+    },
+    {
+      "id": "fingerprint-reader",
+      "km": "ឧបករណ៍ស្កេនស្នាមម្រាមដៃ",
+      "en": "Fingerprint reader",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "read_biometric",
+        "audit"
+      ]
+    },
+    {
+      "id": "intercom",
+      "km": "ទូរស័ព្ទទ្វារ",
+      "en": "Intercom",
+      "category": "access",
+      "domain": "building",
+      "risk": "medium",
+      "capabilities": [
+        "audio",
+        "video"
+      ]
+    },
+    {
+      "id": "alarm-panel",
+      "km": "ផ្ទាំងរោទិ៍សន្តិសុខ",
+      "en": "Alarm panel",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "arm",
+        "disarm"
+      ]
+    },
+    {
+      "id": "siren",
+      "km": "សំឡេងរោទិ៍",
+      "en": "Siren",
+      "category": "other",
+      "domain": "building",
+      "risk": "medium",
+      "capabilities": [
+        "on_off"
+      ]
+    },
+    {
+      "id": "parking-barrier",
+      "km": "របាំងចំណត",
+      "en": "Parking barrier",
+      "category": "access",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "open_close"
+      ]
+    },
+    {
+      "id": "elevator",
+      "km": "ជណ្តើរយន្ត",
+      "en": "Elevator",
+      "category": "industrial",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "status",
+        "call"
+      ]
+    },
+    {
+      "id": "hvac-unit",
+      "km": "ប្រព័ន្ធ HVAC",
+      "en": "HVAC unit",
+      "category": "climate",
+      "domain": "building",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "temperature",
+        "mode"
+      ]
+    },
+    {
+      "id": "fire-panel",
+      "km": "ផ្ទាំងរោទិ៍អគ្គីភ័យ",
+      "en": "Fire alarm panel",
+      "category": "other",
+      "domain": "building",
+      "risk": "high",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "motion-sensor",
+      "km": "ឧបករណ៍ចាប់ចលនា",
+      "en": "Motion sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "motion"
+      ]
+    },
+    {
+      "id": "door-sensor",
+      "km": "ឧបករណ៍ចាប់ទ្វារបើក",
+      "en": "Door sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "open_state"
+      ]
+    },
+    {
+      "id": "temperature-sensor",
+      "km": "សេនស័រកម្តៅ",
+      "en": "Temperature sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "temperature"
+      ]
+    },
+    {
+      "id": "humidity-sensor",
+      "km": "សេនស័រសំណើម",
+      "en": "Humidity sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "humidity"
+      ]
+    },
+    {
+      "id": "smoke-detector",
+      "km": "ឧបករណ៍ចាប់ផ្សែង",
+      "en": "Smoke detector",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "smoke"
+      ]
+    },
+    {
+      "id": "gas-sensor",
+      "km": "ឧបករណ៍ចាប់ហ្គាស",
+      "en": "Gas sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "gas"
+      ]
+    },
+    {
+      "id": "water-leak-sensor",
+      "km": "ឧបករណ៍ចាប់ទឹករួច",
+      "en": "Water leak sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "leak"
+      ]
+    },
+    {
+      "id": "air-quality-sensor",
+      "km": "សេនស័រគុណភាពខ្យល់",
+      "en": "Air quality sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "co2",
+        "pm25"
+      ]
+    },
+    {
+      "id": "light-sensor",
+      "km": "សេនស័រពន្លឺ",
+      "en": "Light sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "lux"
+      ]
+    },
+    {
+      "id": "vibration-sensor",
+      "km": "សេនស័រញ័រ",
+      "en": "Vibration sensor",
+      "category": "sensor",
+      "domain": "industrial",
+      "risk": "low",
+      "capabilities": [
+        "vibration"
+      ]
+    },
+    {
+      "id": "pressure-sensor",
+      "km": "សេនស័រសម្ពាធ",
+      "en": "Pressure sensor",
+      "category": "sensor",
+      "domain": "industrial",
+      "risk": "low",
+      "capabilities": [
+        "pressure"
+      ]
+    },
+    {
+      "id": "level-sensor",
+      "km": "សេនស័រកម្រិតទឹក",
+      "en": "Level sensor",
+      "category": "sensor",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "level"
+      ]
+    },
+    {
+      "id": "flow-sensor",
+      "km": "ឧបករណ៍វាស់លំហូរ",
+      "en": "Flow sensor",
+      "category": "sensor",
+      "domain": "industrial",
+      "risk": "low",
+      "capabilities": [
+        "flow"
+      ]
+    },
+    {
+      "id": "current-sensor",
+      "km": "សេនស័រចរន្ត",
+      "en": "Current sensor",
+      "category": "sensor",
+      "domain": "energy",
+      "risk": "low",
+      "capabilities": [
+        "current"
+      ]
+    },
+    {
+      "id": "gps-tracker",
+      "km": "ឧបករណ៍តាមដាន GPS",
+      "en": "GPS tracker",
+      "category": "sensor",
+      "domain": "vehicle",
+      "risk": "low",
+      "capabilities": [
+        "location"
+      ]
+    },
+    {
+      "id": "soil-sensor",
+      "km": "សេនស័រសំណើមដី",
+      "en": "Soil moisture sensor",
+      "category": "sensor",
+      "domain": "agriculture",
+      "risk": "low",
+      "capabilities": [
+        "soil_moisture"
+      ]
+    },
+    {
+      "id": "energy-meter",
+      "km": "ម៉ែត្រអគ្គិសនី",
+      "en": "Energy meter",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "low",
+      "capabilities": [
+        "energy_meter"
+      ]
+    },
+    {
+      "id": "solar-inverter",
+      "km": "អ៊ីនវើទ័រសូឡា",
+      "en": "Solar inverter",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "high",
+      "capabilities": [
+        "status",
+        "power"
+      ]
+    },
+    {
+      "id": "battery-storage",
+      "km": "ឧបករណ៍ផ្ទុកថ្ម",
+      "en": "Battery storage",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "high",
+      "capabilities": [
+        "status",
+        "charge"
+      ]
+    },
+    {
+      "id": "ev-charger",
+      "km": "ឧបករណ៍សាកឡាន EV",
+      "en": "EV charger",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "power"
+      ]
+    },
+    {
+      "id": "ups",
+      "km": "ម៉ាស៊ីនបម្រុងភ្លើង UPS",
+      "en": "UPS",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "medium",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "generator",
+      "km": "ម៉ាស៊ីនភ្លើង",
+      "en": "Generator",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "status"
+      ]
+    },
+    {
+      "id": "circuit-breaker",
+      "km": "ឧបករណ៍ផ្ដាច់ចរន្ត",
+      "en": "Circuit breaker",
+      "category": "energy",
+      "domain": "energy",
+      "risk": "high",
+      "capabilities": [
+        "on_off",
+        "status"
+      ]
+    },
+    {
+      "id": "water-pump",
+      "km": "ម៉ាស៊ីនបូមទឹក",
+      "en": "Water pump",
+      "category": "water",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "status"
+      ]
+    },
+    {
+      "id": "water-valve",
+      "km": "សន្ទះទឹក",
+      "en": "Water valve",
+      "category": "water",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "open_close"
+      ]
+    },
+    {
+      "id": "tank-controller",
+      "km": "ឧបករណ៍បញ្ជាធុងទឹក",
+      "en": "Water tank controller",
+      "category": "water",
+      "domain": "home",
+      "risk": "medium",
+      "capabilities": [
+        "level",
+        "pump_control"
+      ]
+    },
+    {
+      "id": "irrigation-controller",
+      "km": "ឧបករណ៍បញ្ជាស្រោចស្រព",
+      "en": "Irrigation controller",
+      "category": "water",
+      "domain": "agriculture",
+      "risk": "medium",
+      "capabilities": [
+        "schedule",
+        "valve"
+      ]
+    },
+    {
+      "id": "greenhouse-controller",
+      "km": "ឧបករណ៍បញ្ជាផ្ទះកញ្ចក់",
+      "en": "Greenhouse controller",
+      "category": "controller",
+      "domain": "agriculture",
+      "risk": "medium",
+      "capabilities": [
+        "temperature",
+        "humidity",
+        "fan"
+      ]
+    },
+    {
+      "id": "pond-aerator",
+      "km": "ម៉ាស៊ីនបន្ថែមអុកស៊ីសែនស្រះត្រី",
+      "en": "Pond aerator",
+      "category": "water",
+      "domain": "agriculture",
+      "risk": "medium",
+      "capabilities": [
+        "on_off",
+        "schedule"
+      ]
+    },
+    {
+      "id": "plc",
+      "km": "ឧបករណ៍បញ្ជា PLC",
+      "en": "PLC",
+      "category": "controller",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "io",
+        "status"
+      ]
+    },
+    {
+      "id": "motor-drive",
+      "km": "ម៉ូទ័រ",
+      "en": "Electric motor",
+      "category": "motor",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "speed"
+      ]
+    },
+    {
+      "id": "vfd",
+      "km": "អ៊ីនវើទ័រត្រួតពិនិត្យល្បឿនម៉ូទ័រ",
+      "en": "VFD",
+      "category": "motor",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "speed",
+        "status"
+      ]
+    },
+    {
+      "id": "conveyor",
+      "km": "ខ្សែក្រវ៉ាត់ដឹកជញ្ជូន",
+      "en": "Conveyor",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "speed"
+      ]
+    },
+    {
+      "id": "industrial-pump",
+      "km": "ម៉ាស៊ីនបូមឧស្សាហកម្ម",
+      "en": "Industrial pump",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "status"
+      ]
+    },
+    {
+      "id": "compressor",
+      "km": "ម៉ាស៊ីនបង្ហាប់ខ្យល់",
+      "en": "Air compressor",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "pressure"
+      ]
+    },
+    {
+      "id": "robot-arm",
+      "km": "ដៃរ៉ូបូត",
+      "en": "Robot arm",
+      "category": "robot",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "move",
+        "speed_limit"
+      ]
+    },
+    {
+      "id": "agv",
+      "km": "រ៉ូបូតដឹកជញ្ជូនស្វ័យប្រវត្តិ",
+      "en": "AGV",
+      "category": "robot",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "move",
+        "status"
+      ]
+    },
+    {
+      "id": "cnc",
+      "km": "ម៉ាស៊ីន CNC",
+      "en": "CNC machine",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "status"
+      ]
+    },
+    {
+      "id": "press-machine",
+      "km": "ម៉ាស៊ីនសង្កត់",
+      "en": "Press machine",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "start_stop",
+        "e_stop"
+      ]
+    },
+    {
+      "id": "boiler",
+      "km": "ឡចំហាយ",
+      "en": "Boiler",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "temperature",
+        "pressure"
+      ]
+    },
+    {
+      "id": "emergency-stop",
+      "km": "ប៊ូតុងបញ្ឈប់ពេលអាសន្ន",
+      "en": "Emergency stop",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "e_stop",
+        "reset"
+      ]
+    },
+    {
+      "id": "light-curtain",
+      "km": "ក្រម៉ាពន្លឺសុវត្ថិភាព",
+      "en": "Safety light curtain",
+      "category": "industrial",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "cold-storage",
+      "km": "បន្ទប់ត្រជាក់",
+      "en": "Cold storage",
+      "category": "climate",
+      "domain": "industrial",
+      "risk": "high",
+      "capabilities": [
+        "temperature",
+        "alarm"
+      ]
+    },
+    {
+      "id": "barcode-scanner",
+      "km": "ឧបករណ៍ស្កេនបាកូដ",
+      "en": "Barcode scanner",
+      "category": "other",
+      "domain": "industrial",
+      "risk": "low",
+      "capabilities": [
+        "scan"
+      ]
+    },
+    {
+      "id": "scale",
+      "km": "ជញ្ជីងអេឡិចត្រូនិច",
+      "en": "Electronic scale",
+      "category": "sensor",
+      "domain": "industrial",
+      "risk": "low",
+      "capabilities": [
+        "weight"
+      ]
+    },
+    {
+      "id": "car",
+      "km": "រថយន្ត",
+      "en": "Car",
+      "category": "vehicle",
+      "domain": "vehicle",
+      "risk": "high",
+      "capabilities": [
+        "lock_unlock",
+        "immobilize"
+      ]
+    },
+    {
+      "id": "motorcycle",
+      "km": "ម៉ូតូ",
+      "en": "Motorcycle",
+      "category": "vehicle",
+      "domain": "vehicle",
+      "risk": "high",
+      "capabilities": [
+        "lock_unlock",
+        "immobilize"
+      ]
+    },
+    {
+      "id": "immobilizer",
+      "km": "ឧបករណ៍ចាក់សោម៉ាស៊ីន",
+      "en": "Immobilizer",
+      "category": "vehicle",
+      "domain": "vehicle",
+      "risk": "high",
+      "capabilities": [
+        "immobilize"
+      ]
+    },
+    {
+      "id": "drone",
+      "km": "ដ្រូន",
+      "en": "Drone",
+      "category": "vehicle",
+      "domain": "vehicle",
+      "risk": "high",
+      "capabilities": [
+        "move",
+        "return_home"
+      ]
+    },
+    {
+      "id": "gateway",
+      "km": "ច្រកទ្វារបណ្តាញ",
+      "en": "Gateway",
+      "category": "network",
+      "domain": "network",
+      "risk": "medium",
+      "capabilities": [
+        "bridge",
+        "status"
+      ]
+    },
+    {
+      "id": "router",
+      "km": "រ៉ោតទ័រ",
+      "en": "Router",
+      "category": "network",
+      "domain": "network",
+      "risk": "medium",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "network-switch",
+      "km": "ស្វីតបណ្តាញ",
+      "en": "Network switch",
+      "category": "network",
+      "domain": "network",
+      "risk": "medium",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "access-point",
+      "km": "ឧបករណ៍បញ្ចេញ Wi-Fi",
+      "en": "Wi-Fi access point",
+      "category": "network",
+      "domain": "network",
+      "risk": "low",
+      "capabilities": [
+        "status"
+      ]
+    },
+    {
+      "id": "esp32-board",
+      "km": "បន្ទះ ESP32",
+      "en": "ESP32 board",
+      "category": "controller",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "gpio"
+      ]
+    },
+    {
+      "id": "arduino-board",
+      "km": "បន្ទះ Arduino",
+      "en": "Arduino board",
+      "category": "controller",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "gpio"
+      ]
+    },
+    {
+      "id": "raspberry-pi",
+      "km": "Raspberry Pi",
+      "en": "Raspberry Pi",
+      "category": "controller",
+      "domain": "home",
+      "risk": "low",
+      "capabilities": [
+        "gpio"
+      ]
+    }
+  ]
+}

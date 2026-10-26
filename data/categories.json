@@ -77,6 +77,46 @@
       "en": "Network"
     },
     {
+      "id": "appliance",
+      "km": "ឧបករណ៍ប្រើប្រាស់",
+      "en": "Appliance"
+    },
+    {
+      "id": "display",
+      "km": "អេក្រង់",
+      "en": "Display"
+    },
+    {
+      "id": "energy",
+      "km": "ថាមពល",
+      "en": "Energy"
+    },
+    {
+      "id": "access",
+      "km": "ទ្វារ និងការចូល",
+      "en": "Access"
+    },
+    {
+      "id": "climate",
+      "km": "អាកាសធាតុ",
+      "en": "Climate"
+    },
+    {
+      "id": "water",
+      "km": "ទឹក",
+      "en": "Water"
+    },
+    {
+      "id": "motor",
+      "km": "ម៉ូទ័រ",
+      "en": "Motor"
+    },
+    {
+      "id": "robot",
+      "km": "រ៉ូបូត",
+      "en": "Robot"
+    },
+    {
       "id": "other",
       "km": "ផ្សេងៗ",
       "en": "Other"

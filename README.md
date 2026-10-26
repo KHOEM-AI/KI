@@ -11,6 +11,7 @@ Start at `data/index.json` (lists every file), for example:
 - `endpoints.json` route groups per service
 - `devices.json` pointer only: device records live in the KSV database (GET /api/devices, login required), never in GitHub
 - `ai-apps.json` AI apps and the API each one uses
+- `device-types.json` catalog of device kinds (rice cooker, door, motor...) with risk level
 - `categories.json`, `protocols.json`, `locations.json`, `statuses.json` shared vocabularies
 - `languages.json`, `i18n-km.json`, `i18n-en.json` KI texts (keys start with `ki.`; the language registry itself belongs to KHOEM_AI)
 

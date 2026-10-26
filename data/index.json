@@ -12,6 +12,7 @@
     "i18n-km.json",
     "i18n-en.json",
     "endpoints.json",
-    "statuses.json"
+    "statuses.json",
+    "device-types.json"
   ]
 }
