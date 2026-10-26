@@ -18,13 +18,20 @@
   },
   {
    "id": "khoem-ai-api",
-   "name": "KHOEM_AI API",
-   "type": "ai",
+   "name": "KHOEM_AI (language and localization)",
+   "type": "localization",
    "base_url": "http://127.0.0.1:8790",
    "health": "/health",
    "auth": "none",
    "env_key": "",
-   "enabled": true
+   "enabled": true,
+   "routes": [
+    "/api/languages",
+    "/api/locales",
+    "/api/translate",
+    "/api/coverage"
+   ],
+   "note": "routes from the spec, only /health verified"
   },
   {
    "id": "ai-backend",
@@ -58,7 +65,8 @@
    "health": "",
    "auth": "bearer",
    "env_key": "IQAI_TOKEN",
-   "enabled": true
+   "enabled": true,
+   "note": "AI processing endpoints return 501; auth is one shared token; docs/API.md in the IQ-AI repo"
   },
   {
    "id": "mqtt-broker",

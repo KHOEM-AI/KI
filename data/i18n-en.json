@@ -1,1 +1,11 @@
-{"devices":"Devices","apis":"APIs","ai_apps":"AI apps","on":"On","off":"Off","online":"Online","offline":"Offline","location":"Location","category":"Category"}
+{
+ "ki.devices": "Devices",
+ "ki.apis": "APIs",
+ "ki.ai_apps": "AI apps",
+ "ki.on": "On",
+ "ki.off": "Off",
+ "ki.online": "Online",
+ "ki.offline": "Offline",
+ "ki.location": "Location",
+ "ki.category": "Category"
+}
