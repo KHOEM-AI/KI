@@ -47,6 +47,8 @@
     "Safety Engine deviceType values seen in code: door, vehicle, industrial. Do not use KI type ids as KSV type until the mapping is verified.",
     "KSV criticality (life_support, clinical, robot_mobile, facility, consumer) is separate from KI risk.",
     "src/routes/index.ts imports modules/device (model B); whether server.ts mounts it is not verified.",
-    "Safety Engine reads device.type (server.ts:422, server.ts:3789, safety.engine.ts:404); one rule checks deviceType === \"industrial\"."
+    "Safety Engine reads device.type (server.ts:422, server.ts:3789, safety.engine.ts:404); one rule checks deviceType === \"industrial\".",
+    "server.ts imports Device from models.ts (model A) and no import of routes/index or model B was found in server.ts; model A is likely the active one, not proven.",
+    "grep for \"scope\" in safety.engine.ts returned nothing; how rules are matched to devices is not verified."
   ]
 }
