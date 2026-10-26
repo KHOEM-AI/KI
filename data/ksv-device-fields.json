@@ -45,6 +45,8 @@
     "Both files register the mongoose model Device; which one is active at runtime is not verified.",
     "GET /api/devices filters by organizationId (model A).",
     "Safety Engine deviceType values seen in code: door, vehicle, industrial. Do not use KI type ids as KSV type until the mapping is verified.",
-    "KSV criticality (life_support, clinical, robot_mobile, facility, consumer) is separate from KI risk."
+    "KSV criticality (life_support, clinical, robot_mobile, facility, consumer) is separate from KI risk.",
+    "src/routes/index.ts imports modules/device (model B); whether server.ts mounts it is not verified.",
+    "Safety Engine reads device.type (server.ts:422, server.ts:3789, safety.engine.ts:404); one rule checks deviceType === \"industrial\"."
   ]
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Catalog of device kinds, not individual devices. risk: high = needs safety check and approval in KSV. Khmer names are a first draft.",
+  "note": "Catalog of device kinds, not individual devices. risk: high = needs safety check and approval in KSV. Khmer names are a first draft. ksv_type is a proposed mapping to the coarse KSV type (door, vehicle, industrial, sensor, hvac); not verified; null = no decision yet.",
   "domains": [
     {
       "id": "home",
@@ -55,7 +55,8 @@
         "on_off",
         "dimming",
         "color"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "led-strip",
@@ -68,7 +69,8 @@
         "on_off",
         "dimming",
         "color"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "ceiling-fan",
@@ -80,7 +82,8 @@
       "capabilities": [
         "on_off",
         "speed"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "air-conditioner",
@@ -94,7 +97,8 @@
         "temperature",
         "mode",
         "speed"
-      ]
+      ],
+      "ksv_type": "hvac"
     },
     {
       "id": "tv",
@@ -108,7 +112,8 @@
         "volume",
         "channel",
         "input"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "projector",
@@ -120,7 +125,8 @@
       "capabilities": [
         "on_off",
         "input"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "bass-speaker",
@@ -133,7 +139,8 @@
         "on_off",
         "volume",
         "bass"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "speaker",
@@ -146,7 +153,8 @@
         "on_off",
         "volume",
         "input"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "amplifier",
@@ -159,7 +167,8 @@
         "on_off",
         "volume",
         "input"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "rice-cooker",
@@ -173,7 +182,8 @@
         "mode",
         "timer",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "electric-kettle",
@@ -185,7 +195,8 @@
       "capabilities": [
         "on_off",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "microwave",
@@ -197,7 +208,8 @@
       "capabilities": [
         "start_stop",
         "timer"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "oven",
@@ -210,7 +222,8 @@
         "on_off",
         "temperature",
         "timer"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "induction-cooker",
@@ -223,7 +236,8 @@
         "on_off",
         "power",
         "timer"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "refrigerator",
@@ -235,7 +249,8 @@
       "capabilities": [
         "temperature",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "freezer",
@@ -247,7 +262,8 @@
       "capabilities": [
         "temperature",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "washing-machine",
@@ -260,7 +276,8 @@
         "start_stop",
         "mode",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "dryer",
@@ -273,7 +290,8 @@
         "start_stop",
         "mode",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "dishwasher",
@@ -286,7 +304,8 @@
         "start_stop",
         "mode",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "water-heater",
@@ -298,7 +317,8 @@
       "capabilities": [
         "on_off",
         "temperature"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "robot-vacuum",
@@ -310,7 +330,8 @@
       "capabilities": [
         "start_stop",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "air-purifier",
@@ -322,7 +343,8 @@
       "capabilities": [
         "on_off",
         "speed"
-      ]
+      ],
+      "ksv_type": "hvac"
     },
     {
       "id": "humidifier",
@@ -334,7 +356,8 @@
       "capabilities": [
         "on_off",
         "humidity"
-      ]
+      ],
+      "ksv_type": "hvac"
     },
     {
       "id": "heater",
@@ -346,7 +369,8 @@
       "capabilities": [
         "on_off",
         "temperature"
-      ]
+      ],
+      "ksv_type": "hvac"
     },
     {
       "id": "smart-plug",
@@ -359,7 +383,8 @@
         "on_off",
         "energy_meter",
         "schedule"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "power-strip",
@@ -370,7 +395,8 @@
       "risk": "medium",
       "capabilities": [
         "on_off"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "relay-module",
@@ -382,7 +408,8 @@
       "capabilities": [
         "on_off",
         "schedule"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "wall-switch",
@@ -393,7 +420,8 @@
       "risk": "low",
       "capabilities": [
         "on_off"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "dimmer",
@@ -404,7 +432,8 @@
       "risk": "low",
       "capabilities": [
         "dimming"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "curtain-motor",
@@ -416,7 +445,8 @@
       "capabilities": [
         "open_close",
         "position"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "ir-blaster",
@@ -427,7 +457,8 @@
       "risk": "low",
       "capabilities": [
         "send_ir"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "doorbell",
@@ -439,7 +470,8 @@
       "capabilities": [
         "video",
         "notify"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "cctv",
@@ -451,7 +483,8 @@
       "capabilities": [
         "video",
         "record"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "smart-lock",
@@ -464,7 +497,8 @@
         "lock",
         "unlock",
         "audit"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "door-controller",
@@ -477,7 +511,8 @@
         "lock",
         "unlock",
         "audit"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "gate-barrier",
@@ -488,7 +523,8 @@
       "risk": "high",
       "capabilities": [
         "open_close"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "garage-door",
@@ -499,7 +535,8 @@
       "risk": "high",
       "capabilities": [
         "open_close"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "roller-shutter",
@@ -510,7 +547,8 @@
       "risk": "high",
       "capabilities": [
         "open_close"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "badge-reader",
@@ -522,7 +560,8 @@
       "capabilities": [
         "read_badge",
         "audit"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "fingerprint-reader",
@@ -534,7 +573,8 @@
       "capabilities": [
         "read_biometric",
         "audit"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "intercom",
@@ -546,7 +586,8 @@
       "capabilities": [
         "audio",
         "video"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "alarm-panel",
@@ -558,7 +599,8 @@
       "capabilities": [
         "arm",
         "disarm"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "siren",
@@ -569,7 +611,8 @@
       "risk": "medium",
       "capabilities": [
         "on_off"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "parking-barrier",
@@ -580,7 +623,8 @@
       "risk": "high",
       "capabilities": [
         "open_close"
-      ]
+      ],
+      "ksv_type": "door"
     },
     {
       "id": "elevator",
@@ -592,7 +636,8 @@
       "capabilities": [
         "status",
         "call"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "hvac-unit",
@@ -605,7 +650,8 @@
         "on_off",
         "temperature",
         "mode"
-      ]
+      ],
+      "ksv_type": "hvac"
     },
     {
       "id": "fire-panel",
@@ -616,7 +662,8 @@
       "risk": "high",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "motion-sensor",
@@ -627,7 +674,8 @@
       "risk": "low",
       "capabilities": [
         "motion"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "door-sensor",
@@ -638,7 +686,8 @@
       "risk": "low",
       "capabilities": [
         "open_state"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "temperature-sensor",
@@ -649,7 +698,8 @@
       "risk": "low",
       "capabilities": [
         "temperature"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "humidity-sensor",
@@ -660,7 +710,8 @@
       "risk": "low",
       "capabilities": [
         "humidity"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "smoke-detector",
@@ -671,7 +722,8 @@
       "risk": "medium",
       "capabilities": [
         "smoke"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "gas-sensor",
@@ -682,7 +734,8 @@
       "risk": "medium",
       "capabilities": [
         "gas"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "water-leak-sensor",
@@ -693,7 +746,8 @@
       "risk": "low",
       "capabilities": [
         "leak"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "air-quality-sensor",
@@ -705,7 +759,8 @@
       "capabilities": [
         "co2",
         "pm25"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "light-sensor",
@@ -716,7 +771,8 @@
       "risk": "low",
       "capabilities": [
         "lux"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "vibration-sensor",
@@ -727,7 +783,8 @@
       "risk": "low",
       "capabilities": [
         "vibration"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "pressure-sensor",
@@ -738,7 +795,8 @@
       "risk": "low",
       "capabilities": [
         "pressure"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "level-sensor",
@@ -749,7 +807,8 @@
       "risk": "low",
       "capabilities": [
         "level"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "flow-sensor",
@@ -760,7 +819,8 @@
       "risk": "low",
       "capabilities": [
         "flow"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "current-sensor",
@@ -771,7 +831,8 @@
       "risk": "low",
       "capabilities": [
         "current"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "gps-tracker",
@@ -782,7 +843,8 @@
       "risk": "low",
       "capabilities": [
         "location"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "soil-sensor",
@@ -793,7 +855,8 @@
       "risk": "low",
       "capabilities": [
         "soil_moisture"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "energy-meter",
@@ -804,7 +867,8 @@
       "risk": "low",
       "capabilities": [
         "energy_meter"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "solar-inverter",
@@ -816,7 +880,8 @@
       "capabilities": [
         "status",
         "power"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "battery-storage",
@@ -828,7 +893,8 @@
       "capabilities": [
         "status",
         "charge"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "ev-charger",
@@ -840,7 +906,8 @@
       "capabilities": [
         "start_stop",
         "power"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "ups",
@@ -851,7 +918,8 @@
       "risk": "medium",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "generator",
@@ -863,7 +931,8 @@
       "capabilities": [
         "start_stop",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "circuit-breaker",
@@ -875,7 +944,8 @@
       "capabilities": [
         "on_off",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "water-pump",
@@ -887,7 +957,8 @@
       "capabilities": [
         "on_off",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "water-valve",
@@ -898,7 +969,8 @@
       "risk": "medium",
       "capabilities": [
         "open_close"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "tank-controller",
@@ -910,7 +982,8 @@
       "capabilities": [
         "level",
         "pump_control"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "irrigation-controller",
@@ -922,7 +995,8 @@
       "capabilities": [
         "schedule",
         "valve"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "greenhouse-controller",
@@ -935,7 +1009,8 @@
         "temperature",
         "humidity",
         "fan"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "pond-aerator",
@@ -947,7 +1022,8 @@
       "capabilities": [
         "on_off",
         "schedule"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "plc",
@@ -959,7 +1035,8 @@
       "capabilities": [
         "io",
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "motor-drive",
@@ -971,7 +1048,8 @@
       "capabilities": [
         "start_stop",
         "speed"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "vfd",
@@ -983,7 +1061,8 @@
       "capabilities": [
         "speed",
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "conveyor",
@@ -995,7 +1074,8 @@
       "capabilities": [
         "start_stop",
         "speed"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "industrial-pump",
@@ -1007,7 +1087,8 @@
       "capabilities": [
         "start_stop",
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "compressor",
@@ -1019,7 +1100,8 @@
       "capabilities": [
         "start_stop",
         "pressure"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "robot-arm",
@@ -1031,7 +1113,8 @@
       "capabilities": [
         "move",
         "speed_limit"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "agv",
@@ -1043,7 +1126,8 @@
       "capabilities": [
         "move",
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "cnc",
@@ -1055,7 +1139,8 @@
       "capabilities": [
         "start_stop",
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "press-machine",
@@ -1067,7 +1152,8 @@
       "capabilities": [
         "start_stop",
         "e_stop"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "boiler",
@@ -1079,7 +1165,8 @@
       "capabilities": [
         "temperature",
         "pressure"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "emergency-stop",
@@ -1091,7 +1178,8 @@
       "capabilities": [
         "e_stop",
         "reset"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "light-curtain",
@@ -1102,7 +1190,8 @@
       "risk": "high",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "cold-storage",
@@ -1114,7 +1203,8 @@
       "capabilities": [
         "temperature",
         "alarm"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "barcode-scanner",
@@ -1125,7 +1215,8 @@
       "risk": "low",
       "capabilities": [
         "scan"
-      ]
+      ],
+      "ksv_type": "industrial"
     },
     {
       "id": "scale",
@@ -1136,7 +1227,8 @@
       "risk": "low",
       "capabilities": [
         "weight"
-      ]
+      ],
+      "ksv_type": "sensor"
     },
     {
       "id": "car",
@@ -1148,7 +1240,8 @@
       "capabilities": [
         "lock_unlock",
         "immobilize"
-      ]
+      ],
+      "ksv_type": "vehicle"
     },
     {
       "id": "motorcycle",
@@ -1160,7 +1253,8 @@
       "capabilities": [
         "lock_unlock",
         "immobilize"
-      ]
+      ],
+      "ksv_type": "vehicle"
     },
     {
       "id": "immobilizer",
@@ -1171,7 +1265,8 @@
       "risk": "high",
       "capabilities": [
         "immobilize"
-      ]
+      ],
+      "ksv_type": "vehicle"
     },
     {
       "id": "drone",
@@ -1183,7 +1278,8 @@
       "capabilities": [
         "move",
         "return_home"
-      ]
+      ],
+      "ksv_type": "vehicle"
     },
     {
       "id": "gateway",
@@ -1195,7 +1291,8 @@
       "capabilities": [
         "bridge",
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "router",
@@ -1206,7 +1303,8 @@
       "risk": "medium",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "network-switch",
@@ -1217,7 +1315,8 @@
       "risk": "medium",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "access-point",
@@ -1228,7 +1327,8 @@
       "risk": "low",
       "capabilities": [
         "status"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "esp32-board",
@@ -1239,7 +1339,8 @@
       "risk": "low",
       "capabilities": [
         "gpio"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "arduino-board",
@@ -1250,7 +1351,8 @@
       "risk": "low",
       "capabilities": [
         "gpio"
-      ]
+      ],
+      "ksv_type": null
     },
     {
       "id": "raspberry-pi",
@@ -1261,7 +1363,8 @@
       "risk": "low",
       "capabilities": [
         "gpio"
-      ]
+      ],
+      "ksv_type": null
     }
   ]
 }
