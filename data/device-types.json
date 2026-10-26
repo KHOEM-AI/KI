@@ -36,6 +36,11 @@
       "id": "network",
       "km": "បណ្តាញ",
       "en": "Network"
+    },
+    {
+      "id": "warehouse",
+      "km": "ឃ្លាំង",
+      "en": "Warehouse"
     }
   ],
   "types": [

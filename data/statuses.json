@@ -20,6 +20,21 @@
       "id": "maintenance",
       "km": "កំពុងថែទាំ",
       "en": "Maintenance"
+    },
+    {
+      "id": "pairing",
+      "km": "កំពុងភ្ជាប់",
+      "en": "Pairing"
+    },
+    {
+      "id": "error",
+      "km": "មានបញ្ហា",
+      "en": "Error"
+    },
+    {
+      "id": "decommissioned",
+      "km": "ឈប់ប្រើប្រាស់",
+      "en": "Decommissioned"
     }
   ]
 }

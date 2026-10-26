@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "read_on": "2026-10-26",
+  "source": "KSV source code, read only",
+  "model_a": {
+    "file": "src/infrastructure/database/models.ts",
+    "fields": [
+      "name",
+      "deviceCode",
+      "type",
+      "status",
+      "organizationId",
+      "siteId",
+      "gatewayId",
+      "protocolId",
+      "firmwareVersion",
+      "lastSeenAt",
+      "criticality",
+      "isCompanyFleet",
+      "latitude",
+      "longitude"
+    ]
+  },
+  "model_b": {
+    "file": "src/modules/device/models/device.model.ts",
+    "fields": [
+      "deviceId",
+      "deviceCode",
+      "name",
+      "type",
+      "category",
+      "status",
+      "protocol",
+      "ownerUserId",
+      "orgId",
+      "site",
+      "firmwareVersion",
+      "serialNumber",
+      "latitude",
+      "longitude",
+      "lastSeenAt"
+    ]
+  },
+  "notes": [
+    "Both files register the mongoose model Device; which one is active at runtime is not verified.",
+    "GET /api/devices filters by organizationId (model A).",
+    "Safety Engine deviceType values seen in code: door, vehicle, industrial. Do not use KI type ids as KSV type until the mapping is verified.",
+    "KSV criticality (life_support, clinical, robot_mobile, facility, consumer) is separate from KI risk."
+  ]
+}
