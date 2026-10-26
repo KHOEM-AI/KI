@@ -77,11 +77,11 @@
       "name": "IQ-AI media",
       "type": "media",
       "base_url": "http://127.0.0.1:8799/api/v1",
-      "health": "",
+      "health": "/health",
       "auth": "bearer",
       "env_key": "IQAI_TOKEN",
       "enabled": true,
-      "note": "running; needs bearer token; AI processing endpoints return 501",
+      "note": "running (401 without token on /media); routes from docs/API.md; AI processing returns 501",
       "verified": "2026-10-26",
       "status_seen": 401
     },
@@ -89,20 +89,21 @@
       "id": "mqtt-broker",
       "name": "MQTT broker (device telemetry)",
       "type": "mqtt",
-      "base_url": "",
+      "base_url": "mqtt://test.mosquitto.org:1883",
       "health": "",
       "auth": "",
       "env_key": "MQTT_BROKER_URL",
-      "enabled": true
+      "enabled": true,
+      "note": "public test broker, anyone can read and publish; do not use for real devices; not verified"
     },
     {
       "id": "ksv-api",
       "name": "KSV platform API",
       "type": "platform",
-      "base_url": "http://127.0.0.1:3000/api/v1",
+      "base_url": "http://127.0.0.1:3000/api",
       "auth": "bearer",
       "repo": "KHOEM-AI/KSV",
-      "note": "port 3000 from Postman guide, not verified",
+      "note": "port 3000 from .env; connection failed on 2026-10-26 (service not running); routes taken from source code, the README paths with /api/v1 do not match the code",
       "enabled": true
     }
   ]

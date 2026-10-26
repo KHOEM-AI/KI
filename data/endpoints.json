@@ -50,18 +50,37 @@
       ]
     },
     "ksv-api": {
+      "source": "source code (list cut at 50, may be incomplete)",
       "groups": [
-        "/api/v1/auth",
-        "/api/v1/users",
-        "/api/v1/orgs",
-        "/api/v1/devices",
-        "/api/v1/discovery",
-        "/api/v1/commands",
-        "/api/v1/gateways",
-        "/api/v1/protocols",
-        "/api/v1/safety",
-        "/api/v1/events",
-        "/api/v1/sessions"
+        "/api/auth",
+        "/api/automation",
+        "/api/pairing",
+        "/api/safety",
+        "/api/commands",
+        "/api/devices",
+        "/api/dashboard",
+        "/api/certificates",
+        "/api/security",
+        "/api/recovery",
+        "/api/vocabulary",
+        "/api/health",
+        "/api/version"
+      ]
+    },
+    "iqai-media": {
+      "source": "docs/API.md",
+      "public": [
+        "/api/v1/health"
+      ],
+      "protected": [
+        "/api/v1/media",
+        "/api/v1/media/:id",
+        "/api/v1/media/:id/content"
+      ],
+      "not_implemented_501": [
+        "/api/v1/images/process",
+        "/api/v1/audio/process",
+        "/api/v1/videos/process"
       ]
     }
   }
