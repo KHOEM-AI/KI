@@ -34,6 +34,10 @@ if (dt) {
     if (!doms.has(x.domain)) err('type ' + x.id + ': unknown domain ' + x.domain);
     if (!['low', 'medium', 'high'].includes(x.risk)) err('type ' + x.id + ': bad risk');
   }
+  for (const x of dt.types) {
+    if (x.criticality && !['life_support', 'clinical', 'robot_mobile', 'facility', 'consumer'].includes(x.criticality)) err('type ' + x.id + ': bad criticality');
+    if (x.risk === 'high' && !x.ksv_type && !x.criticality) err('type ' + x.id + ': high risk without ksv_type or criticality');
+  }
   for (const d of data['devices.json']?.devices ?? []) if (d.type && !tids.has(d.type)) err('device ' + d.id + ': unknown type ' + d.type);
 }
 const idx = data['index.json']?.files ?? [];

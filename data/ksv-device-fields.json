@@ -49,6 +49,7 @@
     "src/routes/index.ts imports modules/device (model B); whether server.ts mounts it is not verified.",
     "Safety Engine reads device.type (server.ts:422, server.ts:3789, safety.engine.ts:404); one rule checks deviceType === \"industrial\".",
     "server.ts imports Device from models.ts (model A) and no import of routes/index or model B was found in server.ts; model A is likely the active one, not proven.",
-    "grep for \"scope\" in safety.engine.ts returned nothing; how rules are matched to devices is not verified."
+    "grep for \"scope\" in safety.engine.ts returned nothing; how rules are matched to devices is not verified.",
+    "KI decisions 2026-10-26: appliance (oven, induction cooker, water heater) needs confirmation before remote on; energy types use ksv_type energy; elevator and fire panel are life_support (read-only). These are KI metadata only: KSV safety rules for appliance and energy are not written yet."
   ]
 }
