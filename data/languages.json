@@ -1,0 +1,4 @@
+{"version":1,"default":"km","languages":[
+{"id":"km","name":"ខ្មែរ","file":"i18n-km.json"},
+{"id":"en","name":"English","file":"i18n-en.json"}
+]}
