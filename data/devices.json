@@ -1,0 +1,3 @@
+{"version":1,"devices":[
+{"id":"device-001","name":"Example controller","category":"controller","protocol":"mqtt","address":"","api_id":"","enabled":false}
+]}

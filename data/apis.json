@@ -1,0 +1,3 @@
+{"version":1,"apis":[
+{"id":"example-ai","name":"Example AI","type":"ai","base_url":"https://api.example.com/v1","auth":"bearer","env_key":"EXAMPLE_API_KEY","docs":"","enabled":false}
+]}
