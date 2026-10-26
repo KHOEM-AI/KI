@@ -28,23 +28,27 @@
   },
   {
    "id": "ai-backend",
-   "name": "AI backend",
+   "name": "KHOEM AI backend",
    "type": "ai",
    "base_url": "http://127.0.0.1:8787",
-   "health": "",
-   "auth": "none",
-   "env_key": "",
-   "enabled": true
+   "health": "/api/health",
+   "auth": "header",
+   "env_key": "KHOEM_API_KEY",
+   "enabled": true,
+   "auth_header": "x-api-key",
+   "routes_url": "/api/routes/all",
+   "repo": "KHOEM-AI/AI"
   },
   {
    "id": "ai-ui",
-   "name": "AI UI",
+   "name": "KHOEM AI UI",
    "type": "ui",
    "base_url": "http://127.0.0.1:5175",
    "health": "",
    "auth": "none",
    "env_key": "",
-   "enabled": true
+   "enabled": true,
+   "repo": "KHOEM-AI/AI"
   },
   {
    "id": "iqai-media",
@@ -64,6 +68,16 @@
    "health": "",
    "auth": "",
    "env_key": "MQTT_BROKER_URL",
+   "enabled": true
+  },
+  {
+   "id": "ksv-api",
+   "name": "KSV platform API",
+   "type": "platform",
+   "base_url": "http://127.0.0.1:3000/api/v1",
+   "auth": "bearer",
+   "repo": "KHOEM-AI/KSV",
+   "note": "port 3000 from Postman guide, not verified",
    "enabled": true
   }
  ]
