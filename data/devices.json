@@ -1,4 +1,6 @@
 {
   "version": 1,
+  "source": "ksv-api",
+  "note": "Device records are not stored in GitHub. They live in the KSV database; read them with GET /api/devices (login required).",
   "devices": []
 }

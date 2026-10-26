@@ -9,7 +9,7 @@ Start at `data/index.json` (lists every file), for example:
 ## Files in `data/`
 - `apis.json` services (base_url, auth type, name of the env key, last verified date)
 - `endpoints.json` route groups per service
-- `devices.json` devices (empty so far)
+- `devices.json` pointer only: device records live in the KSV database (GET /api/devices, login required), never in GitHub
 - `ai-apps.json` AI apps and the API each one uses
 - `categories.json`, `protocols.json`, `locations.json`, `statuses.json` shared vocabularies
 - `languages.json`, `i18n-km.json`, `i18n-en.json` KI texts (keys start with `ki.`; the language registry itself belongs to KHOEM_AI)

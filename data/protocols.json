@@ -8,6 +8,7 @@
     "zigbee",
     "ir",
     "rf433",
-    "serial"
+    "serial",
+    "lorawan"
   ]
 }
