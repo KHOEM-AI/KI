@@ -33,12 +33,15 @@
     "/api/translate",
     "/api/coverage"
    ],
-   "note": "other routes come from the spec, not verified yet",
+   "note": "GET routes verified 2026-10-26 (HTTP 200); POST /api/translate not tested",
    "verified": "2026-10-26",
    "status_seen": 200,
    "verified_routes": [
     "/health",
-    "/api/languages"
+    "/api/languages",
+    "/api/locales",
+    "/api/coverage",
+    "/api/translate"
    ]
   },
   {
