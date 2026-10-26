@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const p = 'data/apis.json';
+const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+const set = (id, o) => { const a = j.apis.find(x => x.id === id); if (a) Object.assign(a, o); };
+const d = '2026-10-26';
+set('khoem-ai-api', {verified:d, status_seen:200, verified_routes:['/health','/api/languages'], note:'other routes come from the spec, not verified yet'});
+set('ai-backend', {verified:d, status_seen:200});
+set('ksv-gateway', {verified:d, status_seen:200, health:'/api'});
+set('iqai-media', {verified:d, status_seen:401, note:'running; needs bearer token; AI processing endpoints return 501'});
+set('ai-ui', {verified:d, status_seen:200});
+fs.writeFileSync(p, JSON.stringify(j, null, 1));

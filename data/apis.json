@@ -6,7 +6,7 @@
    "name": "KSV gateway",
    "type": "gateway",
    "base_url": "http://127.0.0.1:4000",
-   "health": "",
+   "health": "/api",
    "auth": "header",
    "env_key": "GATEWAY_TOKEN",
    "enabled": true,
@@ -14,7 +14,9 @@
    "routes": [
     "/api",
     "/api/chat"
-   ]
+   ],
+   "verified": "2026-10-26",
+   "status_seen": 200
   },
   {
    "id": "khoem-ai-api",
@@ -31,7 +33,13 @@
     "/api/translate",
     "/api/coverage"
    ],
-   "note": "routes from the spec, only /health verified"
+   "note": "other routes come from the spec, not verified yet",
+   "verified": "2026-10-26",
+   "status_seen": 200,
+   "verified_routes": [
+    "/health",
+    "/api/languages"
+   ]
   },
   {
    "id": "ai-backend",
@@ -44,7 +52,9 @@
    "enabled": true,
    "auth_header": "x-api-key",
    "routes_url": "/api/routes/all",
-   "repo": "KHOEM-AI/AI"
+   "repo": "KHOEM-AI/AI",
+   "verified": "2026-10-26",
+   "status_seen": 200
   },
   {
    "id": "ai-ui",
@@ -55,7 +65,9 @@
    "auth": "none",
    "env_key": "",
    "enabled": true,
-   "repo": "KHOEM-AI/AI"
+   "repo": "KHOEM-AI/AI",
+   "verified": "2026-10-26",
+   "status_seen": 200
   },
   {
    "id": "iqai-media",
@@ -66,7 +78,9 @@
    "auth": "bearer",
    "env_key": "IQAI_TOKEN",
    "enabled": true,
-   "note": "AI processing endpoints return 501; auth is one shared token; docs/API.md in the IQ-AI repo"
+   "note": "running; needs bearer token; AI processing endpoints return 501",
+   "verified": "2026-10-26",
+   "status_seen": 401
   },
   {
    "id": "mqtt-broker",
