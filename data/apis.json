@@ -113,6 +113,29 @@
       "health": "/health",
       "status_seen": 0,
       "checked": "2026-10-26"
+    },
+    {
+      "id": "ei-t",
+      "name": "EI-T (exact math and numbers)",
+      "type": "math",
+      "base_url": "http://127.0.0.1:3100",
+      "health": "/health",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "routes": [
+        "/v1/functions",
+        "/v1/call"
+      ],
+      "repo": "KHOEM-AI/EI-T",
+      "note": "POST /v1/call with {fn, args}; function whitelist, body max 64KB; listens on 127.0.0.1 only",
+      "verified": "2026-10-29",
+      "status_seen": 200,
+      "verified_routes": [
+        "/health",
+        "/v1/call"
+      ],
+      "checked": "2026-10-29"
     }
   ]
 }
