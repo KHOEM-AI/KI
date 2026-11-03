@@ -7,6 +7,13 @@
       "api_id": "ai-backend",
       "url": "http://127.0.0.1:5175",
       "enabled": true
+    },
+    {
+      "id": "ksv-ui",
+      "name": "KSV (General Device Control)",
+      "api_id": "ksv-api",
+      "url": "http://127.0.0.1:5173",
+      "enabled": true
     }
   ]
 }

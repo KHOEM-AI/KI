@@ -13,11 +13,16 @@
       "auth_header": "x-gateway-token",
       "routes": [
         "/api",
-        "/api/chat"
+        "/api/chat",
+        "/api/ksv"
       ],
-      "verified": "2026-10-26",
+      "verified": "2026-11-03",
       "status_seen": 200,
-      "checked": "2026-10-26"
+      "checked": "2026-11-03",
+      "verified_routes": [
+        "/api"
+      ],
+      "note": "GET /api returned 200 on 2026-11-03. /api/ksv/* (device control) comes from source, needs x-gateway-token, not tested."
     },
     {
       "id": "khoem-ai-api",
@@ -108,11 +113,15 @@
       "base_url": "http://127.0.0.1:3000/api",
       "auth": "bearer",
       "repo": "KHOEM-AI/KSV",
-      "note": "port 3000 from .env; connection failed on 2026-10-26 (service not running); routes taken from source code, the README paths with /api/v1 do not match the code",
+      "note": "port 3000 from .env; GET /api/health and /api/version returned 200 on 2026-11-03; other routes come from source code (login required) and are not tested; the README paths with /api/v1 do not match the code",
       "enabled": true,
       "health": "/health",
-      "status_seen": 0,
-      "checked": "2026-10-26"
+      "status_seen": 200,
+      "checked": "2026-11-03",
+      "verified": "2026-11-03",
+      "verified_routes": [
+        "/health"
+      ]
     },
     {
       "id": "ei-t",
