@@ -23,3 +23,7 @@ Start at `data/index.json` (lists every file), for example:
 ## Check before every push
 `npm run validate` (or `node scripts/validate.mjs`)
 Add devices from the terminal: `node scripts/add-devices.mjs` (one line each: name, category, protocol, address).
+
+## CIDC (Central Intelligence Data Core)
+`./ai.sh` ហៅ launcher របស់ KHOEM_AI ដែលចាប់ផ្ដើម CIDC ផងដែរ៖ API :8800 និង Dashboard :5190។
+Token ទុកក្នុង `~/.cidc_env` (មិន push)។ Repo៖ https://github.com/KHOEM-AI/Central-Intelligence-Data-Core

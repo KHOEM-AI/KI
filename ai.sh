@@ -2,6 +2,7 @@
 # KI: thin wrapper. The KI API (:8790) is started by the KHOEM_AI launcher.
 # This starts the API only; the AI app (:8787/:5175) is not touched.
 # Usage: ./ai.sh [run|stop|restart]
+# CIDC: the launcher also starts CIDC API (:8800) and UI (:5190) when ~/.cidc_env exists.
 set -u
 LAUNCHER="${KHOEM_LAUNCHER:-$HOME/KHOEM_AI/KHOEM_AI/ai.sh}"
 if [ ! -f "$LAUNCHER" ]; then
