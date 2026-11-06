@@ -6,6 +6,8 @@ Central registry of APIs, devices and AI apps. Other pages read these JSON files
 Start at `data/index.json` (lists every file), for example:
 `https://raw.githubusercontent.com/KHOEM-AI/KI/main/data/index.json`
 
+On the phone that runs the services, the KI API (port 5001) serves the same files read-only: `GET /api/registry` (the index) and `GET /api/registry/<name>` (for example `/api/registry/apis`). Only files listed in `data/index.json` are served; `local/` never is. The list of names is read when the server starts, so restart KI after adding a new file to the index.
+
 ## Files in `data/`
 - `apis.json` services (base_url, auth type, name of the env key, last verified date)
 - `endpoints.json` route groups per service

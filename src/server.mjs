@@ -1,5 +1,6 @@
 // KI API (:5001) - plain Node, no dependencies.
 // Routes: GET /api/healthz | GET,POST /api/colors | GET,POST /api/scans | POST /api/scan (AI vision: not configured)
+// Registry (read-only): GET /api/registry | GET /api/registry/<file name from data/index.json, without .json>
 import http from "node:http";
 import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
 
@@ -64,6 +65,23 @@ const routes = {
   },
   "POST /api/scan": async (_req, res) => send(res, 501, { error: "AI vision not configured in KI yet" }),
 };
+
+// Read-only registry: serves only the files listed in data/index.json (fixed route names, never a path from the URL; local/ is never exposed).
+const REGISTRY_DIR = new URL("../data/", import.meta.url);
+const readRegistry = (file) => JSON.parse(readFileSync(new URL(file, REGISTRY_DIR), "utf8"));
+routes["GET /api/registry"] = async (_req, res) => {
+  try { return send(res, 200, readRegistry("index.json")); }
+  catch { return send(res, 500, { error: "registry index unreadable" }); }
+};
+try {
+  for (const file of readRegistry("index.json").files ?? []) {
+    if (!/^[a-z0-9-]+\.json$/.test(file) || file === "index.json") continue;
+    routes[`GET /api/registry/${file.slice(0, -5)}`] = async (_req, res) => {
+      try { return send(res, 200, readRegistry(file)); }
+      catch { return send(res, 500, { error: "registry file unreadable" }); }
+    };
+  }
+} catch { /* no registry index: only GET /api/registry reports the error */ }
 
 http.createServer(async (req, res) => {
   const path = (req.url ?? "/").split("?")[0].replace(/\/+$/, "") || "/";
