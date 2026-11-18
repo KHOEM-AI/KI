@@ -29,3 +29,6 @@ Add devices from the terminal: `node scripts/add-devices.mjs` (one line each: na
 ## CIDC (Central Intelligence Data Core)
 `./ai.sh` ហៅ launcher របស់ KHOEM_AI ដែលចាប់ផ្ដើម CIDC ផងដែរ៖ API :8800 និង Dashboard :5190។
 Token ទុកក្នុង `~/.cidc_env` (មិន push)។ Repo៖ https://github.com/KHOEM-AI/Central-Intelligence-Data-Core
+
+## Start
+`ai` (from `~/KSV/ai.sh`) starts the KI API on :5001 together with the other services; `./ai.sh` here forwards to it. KI alone: `PORT=5001 node src/server.mjs`. Tests: `npm test` (starts a temporary server on :5901 with a temporary HOME).
