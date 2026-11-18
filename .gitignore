@@ -8,3 +8,4 @@ node_modules/
 *.log
 local/
 .DS_Store
+ai.sh.bak-*

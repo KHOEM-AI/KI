@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
-# KI: thin wrapper. The KI API (:8790) is started by the KHOEM_AI launcher.
-# This starts the API only; the AI app (:8787/:5175) is not touched.
-# Usage: ./ai.sh [run|stop|restart]
-# CIDC: the launcher also starts CIDC API (:8800) and UI (:5190) when ~/.cidc_env exists.
+# KI: thin wrapper. The real launcher lives in KSV (single source of truth).
+# It starts the KI API on :5001 (start_ki) together with the other services.
+# KI alone (no other service):  PORT=5001 node src/server.mjs
+# Usage: ./ai.sh [run|stop|restart|status]
 set -u
-LAUNCHER="${KHOEM_LAUNCHER:-$HOME/KHOEM_AI/KHOEM_AI/ai.sh}"
+LAUNCHER="${KSV_LAUNCHER:-$HOME/KSV/ai.sh}"
 if [ ! -f "$LAUNCHER" ]; then
-  echo "Launcher not found: $LAUNCHER (set KHOEM_LAUNCHER to override)" >&2
+  echo "Launcher not found: $LAUNCHER (set KSV_LAUNCHER to override)" >&2
   exit 1
 fi
-# A folder that does not exist makes the launcher skip the AI app ("API only").
-export AI_DIR="${KI_AI_DIR:-$HOME/.ki-no-ai-app}"
 exec bash "$LAUNCHER" "$@"
