@@ -3,6 +3,18 @@
 // Registry (read-only): GET /api/registry | GET /api/registry/<file name from data/index.json, without .json>
 import http from "node:http";
 import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
+import { timingSafeEqual } from "node:crypto";
+import { fileURLToPath } from "node:url";
+
+// Optional token: KI_API_TOKEN in ~/KI/.env (override file with KI_ENV_FILE). If set, every route except GET /api/healthz needs header x-ki-token.
+const ENV_FILE = process.env.KI_ENV_FILE ?? fileURLToPath(new URL("../.env", import.meta.url));
+if (existsSync(ENV_FILE)) { try { process.loadEnvFile(ENV_FILE); } catch { /* unreadable .env: run without token */ } }
+const TOKEN = process.env.KI_API_TOKEN ?? "";
+const tokenOk = (req) => {
+  const a = Buffer.from(String(req.headers["x-ki-token"] ?? ""));
+  const b = Buffer.from(TOKEN);
+  return a.length === b.length && timingSafeEqual(a, b);
+};
 
 const HOME = process.env.HOME ?? ".";
 const PORT = Number(process.env.PORT ?? 5001);
@@ -25,7 +37,7 @@ const send = (res, code, obj) => {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, x-ki-token",
   });
   res.end(JSON.stringify(obj));
 };
@@ -86,6 +98,7 @@ try {
 http.createServer(async (req, res) => {
   const path = (req.url ?? "/").split("?")[0].replace(/\/+$/, "") || "/";
   if (req.method === "OPTIONS") return send(res, 204, {});
+  if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) return send(res, 401, { error: "unauthorized" });
   const h = routes[`${req.method} ${path}`];
   if (!h) return send(res, 404, { error: "not found" });
   try { await h(req, res); } catch (e) { send(res, e.message === "too large" ? 413 : 400, { error: e.message }); }

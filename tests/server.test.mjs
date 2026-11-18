@@ -19,7 +19,7 @@ const req = (method, path, body, raw) =>
 
 before(async () => {
   proc = spawn("node", ["src/server.mjs"], {
-    env: { ...process.env, HOME: home, PORT: String(PORT) },
+    env: { ...process.env, HOME: home, PORT: String(PORT), KI_ENV_FILE: "/nonexistent", KI_API_TOKEN: "" },
     stdio: "ignore",
   });
   for (let i = 0; i < 50; i++) {
