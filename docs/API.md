@@ -324,3 +324,8 @@ Routes whose path is built in code are not listed.
 - No secrets and no LAN IPs in this repo. Key names are in `.env.example`.
 - Run `npm run validate` before every push.
 
+
+## 3. Clients
+
+- MI-K-VISION-3D (:5176) reaches KI through a Vite proxy, `/ki/api/*` to `http://127.0.0.1:5001/api/*`. The proxy allows only: GET healthz, registry, registry/device-types, scans, colors, and POST scans, colors. Everything else returns 403 (see `vite.config.mjs` there).
+- KI has no login and answers every origin (`Access-Control-Allow-Origin: *`). It listens on 127.0.0.1 only. Do not expose it on the LAN.
