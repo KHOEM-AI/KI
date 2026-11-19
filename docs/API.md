@@ -10,7 +10,7 @@ No login. Start from the index, it lists every file:
 curl https://raw.githubusercontent.com/KHOEM-AI/KI/main/data/index.json
 ```
 
-On the phone that runs the services, KI (port 5001) serves the same files read-only. Only files listed in the index are served, and `local/` never is:
+On the phone that runs the services, KI (port 5001) serves the same files read-only. When `KI_API_TOKEN` is set in `~/KI/.env`, every route except `GET /api/healthz` needs the header `x-ki-token` (without it: 401), for example `curl -H "x-ki-token: $KI_API_TOKEN" http://127.0.0.1:5001/api/registry`. Only files listed in the index are served, and `local/` never is:
 
 ```
 curl http://127.0.0.1:5001/api/registry          # the index

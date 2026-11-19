@@ -14,6 +14,13 @@
       "api_id": "ksv-api",
       "url": "http://127.0.0.1:5173",
       "enabled": true
+    },
+    {
+      "id": "cai-scan",
+      "name": "CAI",
+      "api_id": "ki-api",
+      "url": "http://127.0.0.1:5180",
+      "enabled": true
     }
   ]
 }

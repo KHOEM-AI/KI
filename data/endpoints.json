@@ -97,6 +97,39 @@
         "/api/v1/images/process",
         "/api/v1/audio/process",
         "/api/v1/videos/process"
+      ],
+      "from_source": {
+        "source": "IQ-AI routes and AI UI calls, 2026-11-19; not tested",
+        "audio": [
+          "/api/v1/audio/voices",
+          "/api/v1/audio/voice",
+          "/api/v1/audio/edit",
+          "/api/v1/audio/sfx",
+          "/api/v1/audio/tts"
+        ],
+        "videos": [
+          "/api/v1/videos/inspect",
+          "/api/v1/videos/edit",
+          "/api/v1/videos/thumbnail",
+          "/api/v1/videos/audio",
+          "/api/v1/videos/text"
+        ],
+        "projects": [
+          "/api/v1/projects"
+        ]
+      }
+    },
+    "ki-api": {
+      "source": "src/server.mjs, 2026-11-19",
+      "public": [
+        "/api/healthz"
+      ],
+      "protected": [
+        "/api/colors",
+        "/api/scans",
+        "/api/scan",
+        "/api/registry",
+        "/api/registry/:file"
       ]
     }
   }

@@ -90,7 +90,7 @@
       "auth": "bearer",
       "env_key": "IQAI_TOKEN",
       "enabled": true,
-      "note": "running (401 without token on /media); routes from docs/API.md; AI processing returns 501",
+      "note": "running (401 without token on /media); routes from docs/API.md; AI processing returns 501 | audio, video and projects routes added later, see endpoints.json (not verified here)",
       "verified": "2026-10-26",
       "status_seen": 200,
       "checked": "2026-10-26"
@@ -103,8 +103,8 @@
       "health": "",
       "auth": "",
       "env_key": "MQTT_BROKER_URL",
-      "enabled": true,
-      "note": "public test broker, anyone can read and publish; do not use for real devices; not verified"
+      "enabled": false,
+      "note": "public test broker, anyone can read and publish; do not use for real devices; not verified | EXTERNAL: disabled, own services only; plan: local mosquitto on the phone"
     },
     {
       "id": "ksv-api",
@@ -145,6 +145,59 @@
         "/v1/call"
       ],
       "checked": "2026-10-29"
+    },
+    {
+      "id": "ki-api",
+      "name": "KI API (KHOEM-AI central registry)",
+      "type": "registry",
+      "base_url": "http://127.0.0.1:5001",
+      "health": "/api/healthz",
+      "auth": "header",
+      "env_key": "KI_API_TOKEN",
+      "auth_header": "x-ki-token",
+      "enabled": true,
+      "routes": [
+        "/api/healthz",
+        "/api/colors",
+        "/api/scans",
+        "/api/scan",
+        "/api/registry"
+      ],
+      "repo": "KHOEM-AI/KI",
+      "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz"
+    },
+    {
+      "id": "cai-scan",
+      "name": "CAI (photo count and location scan)",
+      "type": "ui",
+      "base_url": "http://127.0.0.1:5180",
+      "health": "",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "note": "serve.py proxies /ki/* to KI with x-ki-token (allowlist: healthz, scans, scan); from source, not tested"
+    },
+    {
+      "id": "cai-share",
+      "name": "CAI share server",
+      "type": "share",
+      "base_url": "http://127.0.0.1:5181",
+      "health": "",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "note": "port from CAI/ai.sh; routes not checked"
+    },
+    {
+      "id": "mik-3d",
+      "name": "MI-K VISION 3D",
+      "type": "ui",
+      "base_url": "http://127.0.0.1:5176",
+      "health": "",
+      "auth": "none",
+      "env_key": "",
+      "enabled": true,
+      "note": "port from KSV/ai.sh; the /ki proxy on this port is blocked on purpose"
     }
   ]
 }
