@@ -53,7 +53,7 @@
     },
     {
       "id": "ai-backend",
-      "name": "KHOEM AI backend",
+      "name": "KHOEM-AI backend",
       "type": "ai",
       "base_url": "http://127.0.0.1:8787",
       "health": "/api/health",
@@ -69,7 +69,7 @@
     },
     {
       "id": "ai-ui",
-      "name": "KHOEM AI UI",
+      "name": "KHOEM-AI UI",
       "type": "ui",
       "base_url": "http://127.0.0.1:5175",
       "health": "",
@@ -198,6 +198,17 @@
       "env_key": "",
       "enabled": true,
       "note": "port from KSV/ai.sh; the /ki proxy on this port is blocked on purpose"
+    },
+    {
+      "id": "cidc-api",
+      "name": "KHOEM-AI CIDC (Central-Intelligence-Data-Core)",
+      "type": "code",
+      "base_url": "http://127.0.0.1:8800",
+      "health": "/api/cidc/health",
+      "auth": "bearer",
+      "env_key": "CIDC_TOKEN",
+      "enabled": true,
+      "note": "needs CIDC_TOKEN (401 without it); UI on :5190 adds the token server-side"
     }
   ]
 }

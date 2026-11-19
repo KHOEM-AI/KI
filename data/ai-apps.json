@@ -3,7 +3,7 @@
   "apps": [
     {
       "id": "khoem-ai-ui",
-      "name": "KHOEM AI",
+      "name": "KHOEM-AI",
       "api_id": "ai-backend",
       "url": "http://127.0.0.1:5175",
       "enabled": true
@@ -20,6 +20,20 @@
       "name": "CAI",
       "api_id": "ki-api",
       "url": "http://127.0.0.1:5180",
+      "enabled": true
+    },
+    {
+      "id": "cidc-ui",
+      "name": "KHOEM-AI CIDC UI",
+      "api_id": "cidc-api",
+      "url": "http://127.0.0.1:5190",
+      "enabled": true
+    },
+    {
+      "id": "mik-3d-ui",
+      "name": "KHOEM-AI MI-K VISION 3D",
+      "api_id": "ki-api",
+      "url": "http://127.0.0.1:5176",
       "enabled": true
     }
   ]
