@@ -161,7 +161,11 @@
         "/api/colors",
         "/api/scans",
         "/api/scan",
-        "/api/registry"
+        "/api/registry",
+        "/api/notify",
+        "/api/notifications",
+        "/api/notifications/read",
+        "/api/status"
       ],
       "repo": "KHOEM-AI/KI",
       "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz"
@@ -209,6 +213,33 @@
       "env_key": "CIDC_TOKEN",
       "enabled": true,
       "note": "needs CIDC_TOKEN (401 without it); UI on :5190 adds the token server-side"
+    },
+    {
+      "id": "cidc",
+      "name": "CIDC (Central Intelligence Data Core)",
+      "type": "data",
+      "base_url": "http://127.0.0.1:8800/api/cidc",
+      "health": "/health",
+      "auth": "bearer",
+      "env_key": "CIDC_TOKEN",
+      "enabled": true,
+      "routes": [
+        "/health",
+        "/modules",
+        "/languages",
+        "/file-formats",
+        "/templates",
+        "/frameworks",
+        "/databases",
+        "/protocols",
+        "/tools",
+        "/platforms",
+        "/version",
+        "/statistics",
+        "/search",
+        "/retrieve"
+      ],
+      "note": "port 8800 and routes from CIDC README and src/server.js; read-only, Bearer CIDC_TOKEN, 60 req/min; UI on :5190; not verified here"
     }
   ]
 }

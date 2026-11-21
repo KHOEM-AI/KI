@@ -329,3 +329,36 @@ Routes whose path is built in code are not listed.
 
 - MI-K-VISION-3D (:5176) reaches KI through a Vite proxy, `/ki/api/*` to `http://127.0.0.1:5001/api/*`. The proxy allows only: GET healthz, registry, registry/device-types, scans, colors, and POST scans, colors. Everything else returns 403 (see `vite.config.mjs` there).
 - KI has no login and answers every origin (`Access-Control-Allow-Origin: *`). It listens on 127.0.0.1 only. Do not expose it on the LAN.
+
+## KI gateway (own services only)
+
+KI forwards to the other KHOEM-AI services at `/gw/<service>/<route>`. Callers send only `x-ki-token`; each service's own credential (`env_key` in `data/apis.json`) is added by KI from `~/KI/.env` and is never returned. The gateway refuses to run without `KI_API_TOKEN`.
+
+- Default deny: only routes listed in `src/gateway.mjs` are forwarded; anything else is 403.
+- Upstreams must be on 127.0.0.1 or localhost (non-loopback is refused), so no external service can be reached.
+- `GET /gw` lists every service, whether it is ready, and its allowed routes (never any secret).
+
+| Service | Forwards to | Credential in ~/KI/.env |
+|---|---|---|
+| `cidc` | CIDC read-only data (`:8800/api/cidc`) | `CIDC_TOKEN` |
+| `ei-t` | EI-T math (`:3100`) | none |
+| `iqai` | IQ-AI audio, video, media, projects (`:8799/api/v1`) | `IQAI_TOKEN` |
+| `lang` | KHOEM_AI language (`:8790`) | none |
+
+```
+curl -H "x-ki-token: $KI_API_TOKEN" http://127.0.0.1:5001/gw
+curl -H "x-ki-token: $KI_API_TOKEN" http://127.0.0.1:5001/gw/cidc/statistics
+```
+
+## KI notifications and status
+
+Both need `x-ki-token` (when `KI_API_TOKEN` is set). Nothing leaves the phone: events are stored in `~/.ki-notifications.json` (newest 500; when full, read items are dropped first so unread alerts are kept).
+
+| Method | Route | What it does |
+|---|---|---|
+| POST | `/api/notify` | `{ "source": "ei-t", "level": "info\|warn\|error\|critical", "title": "...", "message": "..." }` (title up to 120, message up to 1000) |
+| GET | `/api/notifications` | newest first; filters `?unread=1&level=warn&source=ei-t&limit=50`; also returns `unread` and `total` |
+| POST | `/api/notifications/read` | `{ "ids": ["..."] }` or `{ "all": true }` |
+| GET | `/api/status` | asks each service in the registry if it answers: `ok`, `up` (answers 4xx), `error` (5xx), `down`, `disabled`, `skipped` (not http or not loopback) |
+
+From a shell script: `node ~/KI/scripts/notify.mjs warn ksv "KSV API not ready" "see ~/ksv-api.log"`

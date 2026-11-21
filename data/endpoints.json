@@ -129,7 +129,11 @@
         "/api/scans",
         "/api/scan",
         "/api/registry",
-        "/api/registry/:file"
+        "/api/registry/:file",
+        "/api/notify",
+        "/api/notifications",
+        "/api/notifications/read",
+        "/api/status"
       ]
     }
   }

@@ -5,6 +5,9 @@ import http from "node:http";
 import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
 import { timingSafeEqual } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { handleGateway } from "./gateway.mjs";
+import { handleNotify } from "./notify.mjs";
+import { handleStatus } from "./status.mjs";
 
 // Optional token: KI_API_TOKEN in ~/KI/.env (override file with KI_ENV_FILE). If set, every route except GET /api/healthz needs header x-ki-token.
 const ENV_FILE = process.env.KI_ENV_FILE ?? fileURLToPath(new URL("../.env", import.meta.url));
@@ -36,7 +39,7 @@ const send = (res, code, obj) => {
   res.writeHead(code, {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, x-ki-token",
   });
   res.end(JSON.stringify(obj));
@@ -99,6 +102,8 @@ http.createServer(async (req, res) => {
   const path = (req.url ?? "/").split("?")[0].replace(/\/+$/, "") || "/";
   if (req.method === "OPTIONS") return send(res, 204, {});
   if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) return send(res, 401, { error: "unauthorized" });
+  if (handleGateway(req, res, send, { tokenSet: Boolean(TOKEN) })) return; // /gw/<service>/...
+  if (handleNotify(req, res, send) || handleStatus(req, res, send)) return; // /api/notify, /api/notifications, /api/status
   const h = routes[`${req.method} ${path}`];
   if (!h) return send(res, 404, { error: "not found" });
   try { await h(req, res); } catch (e) { send(res, e.message === "too large" ? 413 : 400, { error: e.message }); }
