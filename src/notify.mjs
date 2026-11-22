@@ -52,14 +52,23 @@ const readJson = (req) => new Promise((ok, no) => {
   req.on("close", () => no(new Error("aborted")));
 });
 
+// Same checks as POST /api/notify. With dedupe, an unread item with the same source and title is not added twice.
+// Returns the stored item, or null when the input is bad or was a duplicate.
+export function addNotification(input, { dedupe = false } = {}) {
+  const n = parse(input);
+  if (!n) return null;
+  const a = load();
+  if (dedupe && a.some((x) => !x.read && x.source === n.source && x.title === n.title)) return null;
+  const item = { id: randomUUID(), time: new Date().toISOString(), ...n, read: false };
+  a.push(item);
+  save(trim(a));
+  return item;
+}
+
 async function run(req, res, send, key, url) {
   if (key === "POST /api/notify") {
-    const n = parse(await readJson(req));
-    if (!n) return send(res, 400, { error: "bad notification" });
-    const item = { id: randomUUID(), time: new Date().toISOString(), ...n, read: false };
-    const a = load();
-    a.push(item);
-    save(trim(a));
+    const item = addNotification(await readJson(req));
+    if (!item) return send(res, 400, { error: "bad notification" });
     return send(res, 200, { ok: true, id: item.id });
   }
   if (key === "GET /api/notifications") {

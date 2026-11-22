@@ -212,34 +212,23 @@
       "auth": "bearer",
       "env_key": "CIDC_TOKEN",
       "enabled": true,
-      "note": "needs CIDC_TOKEN (401 without it); UI on :5190 adds the token server-side"
-    },
-    {
-      "id": "cidc",
-      "name": "CIDC (Central Intelligence Data Core)",
-      "type": "data",
-      "base_url": "http://127.0.0.1:8800/api/cidc",
-      "health": "/health",
-      "auth": "bearer",
-      "env_key": "CIDC_TOKEN",
-      "enabled": true,
+      "note": "needs CIDC_TOKEN (401 without it); UI on :5190 adds the token server-side | KI gateway: /gw/cidc/<route> (read-only, 60 req/min upstream)",
       "routes": [
-        "/health",
-        "/modules",
-        "/languages",
-        "/file-formats",
-        "/templates",
-        "/frameworks",
-        "/databases",
-        "/protocols",
-        "/tools",
-        "/platforms",
-        "/version",
-        "/statistics",
-        "/search",
-        "/retrieve"
-      ],
-      "note": "port 8800 and routes from CIDC README and src/server.js; read-only, Bearer CIDC_TOKEN, 60 req/min; UI on :5190; not verified here"
+        "/api/cidc/health",
+        "/api/cidc/modules",
+        "/api/cidc/languages",
+        "/api/cidc/file-formats",
+        "/api/cidc/templates",
+        "/api/cidc/frameworks",
+        "/api/cidc/databases",
+        "/api/cidc/protocols",
+        "/api/cidc/tools",
+        "/api/cidc/platforms",
+        "/api/cidc/version",
+        "/api/cidc/statistics",
+        "/api/cidc/search",
+        "/api/cidc/retrieve"
+      ]
     }
   ]
 }

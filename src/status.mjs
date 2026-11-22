@@ -26,12 +26,17 @@ function probe(api) {
   });
 }
 
-async function run(res, send) {
+// Asks every service in the registry; used by GET /api/status and by the watcher.
+export async function checkAll() {
   const apis = JSON.parse(readFileSync(APIS_FILE, "utf8")).apis ?? [];
-  const services = await Promise.all(apis.map(async (a) => ({
+  return Promise.all(apis.map(async (a) => ({
     id: a.id, name: a.name ?? a.id,
     ...(a.enabled === false ? { state: "disabled" } : await probe(a)),
   })));
+}
+
+async function run(res, send) {
+  const services = await checkAll();
   const summary = {};
   for (const s of services) summary[s.state] = (summary[s.state] ?? 0) + 1;
   send(res, 200, { checked_at: new Date().toISOString(), summary, services });

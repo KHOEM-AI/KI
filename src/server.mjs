@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { handleGateway } from "./gateway.mjs";
 import { handleNotify } from "./notify.mjs";
 import { handleStatus } from "./status.mjs";
+import { startWatcher } from "./watch.mjs";
 
 // Optional token: KI_API_TOKEN in ~/KI/.env (override file with KI_ENV_FILE). If set, every route except GET /api/healthz needs header x-ki-token.
 const ENV_FILE = process.env.KI_ENV_FILE ?? fileURLToPath(new URL("../.env", import.meta.url));
@@ -108,3 +109,4 @@ http.createServer(async (req, res) => {
   if (!h) return send(res, 404, { error: "not found" });
   try { await h(req, res); } catch (e) { send(res, e.message === "too large" ? 413 : 400, { error: e.message }); }
 }).listen(PORT, "127.0.0.1", () => console.log(`KI API listening on :${PORT}`));
+startWatcher(); // opt-in: KI_WATCH_SECONDS=60 in .env

@@ -12,7 +12,7 @@ const LOOPBACK = new Set(["127.0.0.1", "localhost"]);
 // URL alias -> id in data/apis.json. "/x/*" matches any path under /x/.
 const SERVICES = {
   cidc: {
-    api: "cidc", maxBody: MB, timeoutMs: 15_000,
+    api: "cidc-api", prefix: "/api/cidc", maxBody: MB, timeoutMs: 15_000,
     allow: [["GET", "/*"], ["POST", "/search"], ["POST", "/retrieve"]],
   },
   "ei-t": {
@@ -120,7 +120,7 @@ export function handleGateway(req, res, send, { tokenSet }) {
     try {
       up = http.request({
         hostname: r.u.hostname, port: r.u.port || 80, method: req.method,
-        path: r.u.pathname.replace(/\/+$/, "") + rawSub + query, headers,
+        path: r.u.pathname.replace(/\/+$/, "") + (r.svc.prefix ?? "") + rawSub + query, headers,
       });
     } catch { send(res, 400, { error: "bad request" }); return true; }
 

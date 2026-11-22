@@ -11,13 +11,13 @@ const TOKEN = "ki-test-token";
 const home = mkdtempSync(join(tmpdir(), "ki-gw-"));
 const svc = (id, base_url, extra = {}) => ({ id, name: id, type: "x", base_url, enabled: true, auth: "none", ...extra });
 const apisA = { apis: [
-  svc("cidc", `http://127.0.0.1:${UP}/api/cidc`, { auth: "bearer", env_key: "CIDC_TOKEN" }),
+  svc("cidc-api", `http://127.0.0.1:${UP}`, { auth: "bearer", env_key: "CIDC_TOKEN" }),
   svc("ei-t", `http://127.0.0.1:${UP}`),
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { auth: "bearer", env_key: "IQAI_TOKEN" }),
   svc("khoem-ai-api", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "LANG_KEY" }),
 ] };
 const apisB = { apis: [
-  svc("cidc", "http://example.com:80/api/cidc", { auth: "bearer", env_key: "CIDC_TOKEN" }),
+  svc("cidc-api", "http://example.com:80", { auth: "bearer", env_key: "CIDC_TOKEN" }),
   svc("ei-t", `http://127.0.0.1:${DEAD}`),
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { enabled: false }),
 ] };
