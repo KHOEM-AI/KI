@@ -29,6 +29,13 @@ const SERVICES = {
       ["GET", "/projects"], ["POST", "/projects"], ["GET", "/projects/*"], ["PUT", "/projects/*"], ["DELETE", "/projects/*"],
     ],
   },
+  ai: {
+    api: "ai-backend", maxBody: MB, timeoutMs: 120_000,
+    allow: [
+      ["GET", "/api/health"], ["GET", "/api/models"], ["GET", "/api/status"], ["GET", "/api/routes/all"],
+      ["POST", "/api/chat"],
+    ],
+  },
   lang: {
     api: "khoem-ai-api", maxBody: MB, timeoutMs: 15_000,
     allow: [["GET", "/health"], ["GET", "/api/languages"], ["GET", "/api/locales"], ["GET", "/api/coverage"], ["POST", "/api/translate"]],

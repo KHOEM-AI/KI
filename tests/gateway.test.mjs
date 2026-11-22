@@ -15,6 +15,7 @@ const apisA = { apis: [
   svc("ei-t", `http://127.0.0.1:${UP}`),
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { auth: "bearer", env_key: "IQAI_TOKEN" }),
   svc("khoem-ai-api", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "LANG_KEY" }),
+  svc("ai-backend", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "KHOEM_API_KEY" }),
 ] };
 const apisB = { apis: [
   svc("cidc-api", "http://example.com:80", { auth: "bearer", env_key: "CIDC_TOKEN" }),
@@ -56,7 +57,7 @@ before(async () => {
       res.end(body);
     });
   }).listen(UP, "127.0.0.1");
-  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "" });
+  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "", KHOEM_API_KEY: "secret-ai" });
   await startKi(KI_B, apisB, { CIDC_TOKEN: "secret-cidc" });
   await startKi(KI_C, apisA, { KI_API_TOKEN: "" });
 });
@@ -88,7 +89,7 @@ test("lists services and never shows secrets", async () => {
   const text = await r.text();
   assert.ok(!text.includes("secret-"));
   const list = JSON.parse(text).services;
-  assert.equal(list.length, 4);
+  assert.equal(list.length, 5);
   assert.equal(list.find((s) => s.service === "cidc").ready, true);
   assert.match(list.find((s) => s.service === "lang").problem, /LANG_KEY/);
 });
@@ -160,4 +161,14 @@ test("non-loopback, disabled and unreachable upstreams are refused", async () =>
   assert.equal(r.status, 503);
   assert.match((await r.json()).error, /disabled/);
   assert.equal((await gw(KI_B, "/gw/ei-t/health")).status, 502);
+});
+
+test("ai: allowed routes carry the x-api-key; other routes are 403", async () => {
+  const r = await gw(KI_A, "/gw/ai/api/health");
+  assert.equal(r.status, 200);
+  const b = await r.json();
+  assert.equal(b.url, "/api/health");
+  assert.equal(b.headers["x-api-key"], "secret-ai");
+  assert.equal((await gw(KI_A, "/gw/ai/api/patch", { method: "POST", body: "{}" })).status, 403);
+  assert.equal((await gw(KI_A, "/gw/ai/api/chat")).status, 403);
 });

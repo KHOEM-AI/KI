@@ -343,6 +343,7 @@ KI forwards to the other KHOEM-AI services at `/gw/<service>/<route>`. Callers s
 | `cidc` | CIDC read-only data (`:8800/api/cidc`) | `CIDC_TOKEN` |
 | `ei-t` | EI-T math (`:3100`) | none |
 | `iqai` | IQ-AI audio, video, media, projects (`:8799/api/v1`) | `IQAI_TOKEN` |
+| `ai` | AI backend: health, models, status, routes, chat (`:8787`) | `KHOEM_API_KEY` |
 | `lang` | KHOEM_AI language (`:8790`) | none |
 
 ```
