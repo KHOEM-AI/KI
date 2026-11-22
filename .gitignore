@@ -9,3 +9,4 @@ node_modules/
 local/
 .DS_Store
 ai.sh.bak-*
+package-lock.json
