@@ -133,7 +133,24 @@
         "/api/notify",
         "/api/notifications",
         "/api/notifications/read",
-        "/api/status"
+        "/api/status",
+        "/v1",
+        "/v1/chat",
+        "/v1/models",
+        "/v1/search",
+        "/v1/retrieve",
+        "/v1/translate",
+        "/v1/languages",
+        "/v1/math",
+        "/v1/audio/*",
+        "/v1/videos/*",
+        "/v1/media",
+        "/v1/projects",
+        "/v1/files",
+        "/v1/files/:id",
+        "/v1/data",
+        "/v1/data/:collection",
+        "/v1/data/:collection/:id"
       ]
     }
   }

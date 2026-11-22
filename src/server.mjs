@@ -1,5 +1,6 @@
 // KI API (:5001) - plain Node, no dependencies.
 // Routes: GET /api/healthz | GET,POST /api/colors | GET,POST /api/scans | POST /api/scan (AI vision: not configured)
+// Versioned API: /v1/... (see src/v1.mjs)
 // Registry (read-only): GET /api/registry | GET /api/registry/<file name from data/index.json, without .json>
 import http from "node:http";
 import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
@@ -7,6 +8,7 @@ import { timingSafeEqual } from "node:crypto";
 import { makeAccessLog } from "./accesslog.mjs";
 import { fileURLToPath } from "node:url";
 import { handleGateway } from "./gateway.mjs";
+import { handleV1 } from "./v1.mjs";
 import { handleNotify } from "./notify.mjs";
 import { handleStatus } from "./status.mjs";
 import { startWatcher } from "./watch.mjs";
@@ -108,6 +110,7 @@ http.createServer(async (req, res) => {
   if (req.method === "OPTIONS") return send(res, 204, {});
   if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) return send(res, 401, { error: "unauthorized" });
   if (handleGateway(req, res, send, { tokenSet: Boolean(TOKEN) })) return; // /gw/<service>/...
+  if (handleV1(req, res, send, { tokenSet: Boolean(TOKEN), gateway: handleGateway })) return; // /v1/...
   if (handleNotify(req, res, send) || handleStatus(req, res, send)) return; // /api/notify, /api/notifications, /api/status
   const h = routes[`${req.method} ${path}`];
   if (!h) return send(res, 404, { error: "not found" });

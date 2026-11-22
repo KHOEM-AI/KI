@@ -351,6 +351,30 @@ curl -H "x-ki-token: $KI_API_TOKEN" http://127.0.0.1:5001/gw
 curl -H "x-ki-token: $KI_API_TOKEN" http://127.0.0.1:5001/gw/cidc/statistics
 ```
 
+## KI /v1 (versioned API)
+
+One stable front door for apps and the AI UI. Every route needs `x-ki-token`; without `KI_API_TOKEN` it answers 503. Everything stays on the phone.
+
+| Route | What it does |
+|---|---|
+| `GET /v1` | list of routes |
+| `GET /v1/models`, `POST /v1/chat` | AI backend (`/gw/ai`) |
+| `POST /v1/search`, `POST /v1/retrieve` | CIDC knowledge |
+| `POST /v1/translate`, `GET /v1/languages` | KHOEM_AI language |
+| `POST /v1/math`, `GET /v1/math/functions` | EI-T exact math |
+| `/v1/audio/*`, `/v1/videos/*`, `/v1/media`, `/v1/projects` | IQ-AI |
+| `GET,POST /v1/files` (`?name=`), `GET,DELETE /v1/files/<id>` | KI file store: raw body up to 20 MB, up to 500 files, saved in `~/.ki-files/` |
+| `GET /v1/data`, `GET /v1/data/<collection>`, `GET,PUT,DELETE /v1/data/<collection>/<id>` | KI JSON store: a document is a JSON object up to 64 KB, up to 1000 per collection, saved in `~/.ki-data-<collection>.json` |
+
+- Module routes are forwarded by the gateway, so its allowlist (default deny), loopback rule and server-side credentials apply. A method the gateway does not allow answers 403.
+- Names: collection `a-z 0-9 -` (max 32), document id `A-Za-z0-9 _ . -` (max 64, starts with a letter or digit). Downloads are always `attachment` with `nosniff`.
+- Not included on purpose: user accounts, payments, a generic database or admin API. They need their own design and review.
+
+```
+curl -H "x-ki-token: $T" -H "Content-Type: application/json" -d '{"title":"hi"}' -X PUT http://127.0.0.1:5001/v1/data/notes/n1
+curl -H "x-ki-token: $T" --data-binary @photo.jpg "http://127.0.0.1:5001/v1/files?name=photo.jpg"
+```
+
 ## KI notifications and status
 
 Both need `x-ki-token` (when `KI_API_TOKEN` is set). Nothing leaves the phone: events are stored in `~/.ki-notifications.json` (newest 500; when full, read items are dropped first so unread alerts are kept).

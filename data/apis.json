@@ -165,10 +165,12 @@
         "/api/notify",
         "/api/notifications",
         "/api/notifications/read",
-        "/api/status"
+        "/api/status",
+        "/v1",
+        "/gw"
       ],
       "repo": "KHOEM-AI/KI",
-      "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz"
+      "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz; /v1 is the versioned front door (see docs/API.md)"
     },
     {
       "id": "cai-scan",
