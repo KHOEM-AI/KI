@@ -150,7 +150,11 @@
         "/v1/files/:id",
         "/v1/data",
         "/v1/data/:collection",
-        "/v1/data/:collection/:id"
+        "/v1/data/:collection/:id",
+        "/v1/keys",
+        "/v1/keys/:id",
+        "/v1/usage",
+        "/v1/system"
       ]
     }
   }

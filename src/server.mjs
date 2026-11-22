@@ -9,6 +9,7 @@ import { makeAccessLog } from "./accesslog.mjs";
 import { fileURLToPath } from "node:url";
 import { handleGateway } from "./gateway.mjs";
 import { handleV1 } from "./v1.mjs";
+import { authorizeKey } from "./keys.mjs";
 import { handleNotify } from "./notify.mjs";
 import { handleStatus } from "./status.mjs";
 import { startWatcher } from "./watch.mjs";
@@ -45,7 +46,7 @@ const send = (res, code, obj) => {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, x-ki-token",
+    "Access-Control-Allow-Headers": "Content-Type, x-ki-token, x-ki-key",
   });
   res.end(JSON.stringify(obj));
 };
@@ -106,9 +107,14 @@ try {
 http.createServer(async (req, res) => {
   const path = (req.url ?? "/").split("?")[0].replace(/\/+$/, "") || "/";
   const t0 = Date.now();
-  res.on("finish", () => accessLog(req.method, path, res.statusCode, Date.now() - t0));
+  res.on("finish", () => accessLog(req.method, path, res.statusCode, Date.now() - t0, req.kiKey?.id));
   if (req.method === "OPTIONS") return send(res, 204, {});
-  if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) return send(res, 401, { error: "unauthorized" });
+  if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) {
+    // Not the master token: a developer key (x-ki-key) may still be allowed, on /v1 routes of its scopes only.
+    const k = authorizeKey(req.headers["x-ki-key"], path);
+    if (!k.rec) return send(res, k.code, { error: k.error });
+    req.kiKey = k.rec;
+  }
   if (handleGateway(req, res, send, { tokenSet: Boolean(TOKEN) })) return; // /gw/<service>/...
   if (handleV1(req, res, send, { tokenSet: Boolean(TOKEN), gateway: handleGateway })) return; // /v1/...
   if (handleNotify(req, res, send) || handleStatus(req, res, send)) return; // /api/notify, /api/notifications, /api/status

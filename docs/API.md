@@ -375,6 +375,18 @@ curl -H "x-ki-token: $T" -H "Content-Type: application/json" -d '{"title":"hi"}'
 curl -H "x-ki-token: $T" --data-binary @photo.jpg "http://127.0.0.1:5001/v1/files?name=photo.jpg"
 ```
 
+### Developer keys, usage and system (master token only, except where noted)
+
+| Route | What it does |
+|---|---|
+| `GET /v1/keys` | list keys (id, name, prefix, scopes, created, last_used, count, revoked) and the valid scopes; never the key or its hash |
+| `POST /v1/keys` | `{ "name": "app1", "scopes": ["chat","data"] }`; the response holds the new `key` once |
+| `DELETE /v1/keys/<id>` | revoke |
+| `GET /v1/usage?days=7` | totals from the access log: status classes, top routes, per key, per day (1-30 days) |
+| `GET /v1/system[?services=1]` | version, uptime, storage counts, key counts; `services=1` also probes every service |
+
+A developer key goes in header `x-ki-key`. It works only on `/v1/<scope>` routes of its scopes (`chat` `search` `translate` `math` `media` `files` `data`), never on `/api`, `/gw`, `/v1/keys`, `/v1/usage` or `/v1/system` (403). Wrong, missing or revoked key: 401. More than `KI_KEY_RATE_PER_MIN` (default 120) requests in a minute: 429. Only a SHA-256 hash is stored, in `~/.ki-keys.json` (mode 600). Keys with `data` or `files` see every collection and file. See `docs/ARCHITECTURE.md` for the plan and what is not built yet.
+
 ## KI notifications and status
 
 Both need `x-ki-token` (when `KI_API_TOKEN` is set). Nothing leaves the phone: events are stored in `~/.ki-notifications.json` (newest 500; when full, read items are dropped first so unread alerts are kept).

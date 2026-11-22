@@ -22,6 +22,9 @@ On the phone that runs the services, the KI API (port 5001) serves the same file
 - Addresses like 127.0.0.1 only work on the phone that runs the services.
 - Only entries with a `verified` date were checked against a running service; the rest come from READMEs and are not verified.
 
+## API layout
+`/v1` is the versioned API for apps (module aliases, files, data, developer keys, usage, system); see `docs/API.md` and `docs/ARCHITECTURE.md` (Khmer).
+
 ## Check before every push
 `npm run validate` (or `node scripts/validate.mjs`)
 Add devices from the terminal: `node scripts/add-devices.mjs` (one line each: name, category, protocol, address).

@@ -3,6 +3,9 @@
 //  - /v1/files and /v1/data are KI's own storage (in the home folder, never in git).
 import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, readdirSync, unlinkSync, statSync, createReadStream } from "node:fs";
 import { randomBytes } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import { SCOPES, listKeys, createKey, revokeKey } from "./keys.mjs";
+import { checkAll } from "./status.mjs";
 
 const MB = 1024 * 1024;
 const MAX_FILE = 20 * MB, MAX_FILES = 500;
@@ -34,6 +37,7 @@ const INDEX = {
     "/v1/audio/*", "/v1/videos/*", "/v1/media", "/v1/projects",
     "GET,POST /v1/files", "GET,DELETE /v1/files/<id>",
     "GET /v1/data", "GET /v1/data/<collection>", "GET,PUT,DELETE /v1/data/<collection>/<id>",
+    "master token only: GET,POST /v1/keys", "DELETE /v1/keys/<id>", "GET /v1/usage", "GET /v1/system",
   ],
 };
 
@@ -152,6 +156,87 @@ async function data(req, res, send, sub) {
   return send(res, 405, { error: "method not allowed" });
 }
 
+
+// ---------- master token only: /v1/keys, /v1/usage, /v1/system ----------
+async function keysRoute(req, res, send, sub) {
+  if (sub === "/keys") {
+    if (req.method === "GET") return send(res, 200, { scopes: SCOPES, keys: listKeys() });
+    if (req.method === "POST") {
+      const doc = await readDoc(req);
+      const r = createKey(doc?.name, doc?.scopes);
+      return send(res, 200, { ok: true, ...r, note: "save this key now; it is not shown again" });
+    }
+    return send(res, 405, { error: "method not allowed" });
+  }
+  const id = sub.slice("/keys/".length);
+  if (!/^[a-f0-9]{8}$/.test(id)) return send(res, 400, { error: "bad key id" });
+  if (req.method !== "DELETE") return send(res, 405, { error: "method not allowed" });
+  return revokeKey(id) ? send(res, 200, { ok: true, revoked: id }) : send(res, 404, { error: "key not found" });
+}
+
+// Groups paths so the statistics stay short: ids become :id, gateway paths become /gw/<service>/*.
+const routeName = (p) => {
+  if (/^\/v1\/files\/[a-f0-9]{24}$/.test(p)) return "/v1/files/:id";
+  if (/^\/v1\/data\/[^/]+\/[^/]+$/.test(p)) return "/v1/data/:collection/:id";
+  if (/^\/v1\/data\/[^/]+$/.test(p)) return "/v1/data/:collection";
+  if (/^\/v1\/keys\/[^/]+$/.test(p)) return "/v1/keys/:id";
+  const g = /^\/gw\/([a-z0-9-]+)\//.exec(p);
+  return g ? `/gw/${g[1]}/*` : p;
+};
+
+function usage(res, send, query) {
+  const days = Math.min(30, Math.max(1, Number(new URLSearchParams(query).get("days")) || 1));
+  const since = Date.now() - days * 86_400_000;
+  const base = `${home()}/.ki-access.jsonl`;
+  const rows = [];
+  for (const f of [base + ".1", base]) {
+    if (!existsSync(f)) continue;
+    for (const line of readFileSync(f, "utf8").split("\n")) {
+      if (!line) continue;
+      try { const r = JSON.parse(line); if (Date.parse(r.t) >= since) rows.push(r); } catch { /* skip a broken line */ }
+    }
+  }
+  const count = (map, k) => map.set(k, (map.get(k) ?? 0) + 1);
+  const status = new Map(), routes = new Map(), byKey = new Map(), perDay = new Map();
+  let ms = 0;
+  for (const r of rows) {
+    count(status, `${Math.floor(Number(r.s) / 100)}xx`);
+    count(routes, `${r.m} ${routeName(String(r.p))}`);
+    if (r.k) count(byKey, r.k);
+    count(perDay, String(r.t).slice(0, 10));
+    ms += Number(r.ms) || 0;
+  }
+  const names = new Map(listKeys().map((k) => [k.id, k.name]));
+  const top = (m, n) => [...m].sort((a, b) => b[1] - a[1]).slice(0, n);
+  send(res, 200, {
+    days, since: new Date(since).toISOString(), total: rows.length, avg_ms: rows.length ? Math.round(ms / rows.length) : 0,
+    status: Object.fromEntries(status),
+    routes: top(routes, 20).map(([route, n]) => ({ route, count: n })),
+    keys: top(byKey, 20).map(([id, n]) => ({ id, name: names.get(id) ?? null, count: n })),
+    per_day: [...perDay].sort().map(([day, n]) => ({ day, count: n })),
+  });
+}
+
+async function system(res, send, query) {
+  const pkg = readJsonFile(fileURLToPath(new URL("../package.json", import.meta.url)), {});
+  const k = listKeys();
+  const fdir = filesDir();
+  const out = {
+    service: "ki", version: pkg.version ?? null, node: process.version,
+    uptime_s: Math.round(process.uptime()), port: Number(process.env.PORT ?? 5001),
+    keys: { active: k.filter((x) => !x.revoked).length, revoked: k.filter((x) => x.revoked).length },
+    storage: {
+      files: existsSync(fdir) ? readdirSync(fdir).filter((f) => f.endsWith(".json")).length : 0,
+      collections: readdirSync(home()).filter((f) => /^\.ki-data-[a-z0-9-]+\.json$/.test(f)).length,
+    },
+  };
+  if (new URLSearchParams(query).get("services") === "1") {
+    const list = await checkAll();
+    out.services = { summary: list.reduce((a, s) => ({ ...a, [s.state]: (a[s.state] ?? 0) + 1 }), {}), list: list.map((s) => ({ id: s.id, state: s.state })) };
+  }
+  send(res, 200, out);
+}
+
 // Returns true when the request belongs to /v1 (it then answers it). `gateway` is handleGateway.
 export function handleV1(req, res, send, { tokenSet, gateway }) {
   const url = req.url ?? "/";
@@ -171,13 +256,19 @@ export function handleV1(req, res, send, { tokenSet, gateway }) {
     if (sub === p || sub.startsWith(p + "/")) { req.url = target + sub.slice(p.length) + query; return gateway(req, res, send, { tokenSet }); }
   }
 
-  const own = sub === "/files" || sub.startsWith("/files/") ? () => files(req, res, send, sub, query)
+  const adminRoute = sub === "/keys" || sub.startsWith("/keys/") || sub === "/usage" || sub === "/system";
+  if (adminRoute && req.kiKey) { send(res, 403, { error: "master token required" }); return true; }
+  const own = sub === "/keys" || sub.startsWith("/keys/") ? () => keysRoute(req, res, send, sub)
+    : sub === "/usage" ? async () => (req.method === "GET" ? usage(res, send, query) : send(res, 405, { error: "method not allowed" }))
+    : sub === "/system" ? async () => (req.method === "GET" ? system(res, send, query) : send(res, 405, { error: "method not allowed" }))
+    : sub === "/files" || sub.startsWith("/files/") ? () => files(req, res, send, sub, query)
     : sub === "/data" || sub.startsWith("/data/") ? () => data(req, res, send, sub)
     : null;
   if (!own) { send(res, 404, { error: "unknown /v1 route" }); return true; }
   own().catch((e) => {
     if (res.headersSent) return res.destroy();
-    send(res, e.message === "too large" ? 413 : e.message === "bad json" ? 400 : 500, { error: e.message === "too large" || e.message === "bad json" ? e.message : "storage error" });
+    const known = e.status || e.message === "too large" || e.message === "bad json";
+    send(res, e.status ?? (e.message === "too large" ? 413 : e.message === "bad json" ? 400 : 500), { error: known ? e.message : "storage error" });
   });
   return true;
 }
