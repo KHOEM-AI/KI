@@ -4,6 +4,7 @@
 import http from "node:http";
 import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
 import { timingSafeEqual } from "node:crypto";
+import { makeAccessLog } from "./accesslog.mjs";
 import { fileURLToPath } from "node:url";
 import { handleGateway } from "./gateway.mjs";
 import { handleNotify } from "./notify.mjs";
@@ -21,6 +22,7 @@ const tokenOk = (req) => {
 };
 
 const HOME = process.env.HOME ?? ".";
+const accessLog = makeAccessLog(HOME);
 const PORT = Number(process.env.PORT ?? 5001);
 const MAX_BODY = 8 * 1024 * 1024;
 
@@ -101,6 +103,8 @@ try {
 
 http.createServer(async (req, res) => {
   const path = (req.url ?? "/").split("?")[0].replace(/\/+$/, "") || "/";
+  const t0 = Date.now();
+  res.on("finish", () => accessLog(req.method, path, res.statusCode, Date.now() - t0));
   if (req.method === "OPTIONS") return send(res, 204, {});
   if (TOKEN && !(req.method === "GET" && path === "/api/healthz") && !tokenOk(req)) return send(res, 401, { error: "unauthorized" });
   if (handleGateway(req, res, send, { tokenSet: Boolean(TOKEN) })) return; // /gw/<service>/...
