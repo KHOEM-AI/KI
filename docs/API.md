@@ -344,6 +344,7 @@ KI forwards to the other KHOEM-AI services at `/gw/<service>/<route>`. Callers s
 | `ei-t` | EI-T math (`:3100`) | none |
 | `iqai` | IQ-AI audio, video, media, projects (`:8799/api/v1`) | `IQAI_TOKEN` |
 | `ai` | AI backend: health, models, status, routes, chat (`:8787`) | `KHOEM_API_KEY` |
+| `ksv` | KSV gateway (`:4000`), read-only: `GET /gw/ksv/api` (service list). Device control `/api/ksv/*` is not forwarded | `GATEWAY_TOKEN` |
 | `lang` | KHOEM_AI language (`:8790`) | none |
 
 ```

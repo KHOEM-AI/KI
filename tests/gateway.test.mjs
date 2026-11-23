@@ -16,11 +16,13 @@ const apisA = { apis: [
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { auth: "bearer", env_key: "IQAI_TOKEN" }),
   svc("khoem-ai-api", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "LANG_KEY" }),
   svc("ai-backend", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "KHOEM_API_KEY" }),
+  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "GATEWAY_TOKEN" }),
 ] };
 const apisB = { apis: [
   svc("cidc-api", "http://example.com:80", { auth: "bearer", env_key: "CIDC_TOKEN" }),
   svc("ei-t", `http://127.0.0.1:${DEAD}`),
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { enabled: false }),
+  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "GATEWAY_TOKEN" }),
 ] };
 
 const seen = [];
@@ -57,8 +59,8 @@ before(async () => {
       res.end(body);
     });
   }).listen(UP, "127.0.0.1");
-  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "", KHOEM_API_KEY: "secret-ai" });
-  await startKi(KI_B, apisB, { CIDC_TOKEN: "secret-cidc" });
+  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "", KHOEM_API_KEY: "secret-ai", GATEWAY_TOKEN: "secret-ksv" });
+  await startKi(KI_B, apisB, { CIDC_TOKEN: "secret-cidc", GATEWAY_TOKEN: "" });
   await startKi(KI_C, apisA, { KI_API_TOKEN: "" });
 });
 after(() => {
@@ -89,8 +91,9 @@ test("lists services and never shows secrets", async () => {
   const text = await r.text();
   assert.ok(!text.includes("secret-"));
   const list = JSON.parse(text).services;
-  assert.equal(list.length, 5);
+  assert.equal(list.length, 6);
   assert.equal(list.find((s) => s.service === "cidc").ready, true);
+  assert.equal(list.find((s) => s.service === "ksv").ready, true);
   assert.match(list.find((s) => s.service === "lang").problem, /LANG_KEY/);
 });
 
@@ -171,4 +174,27 @@ test("ai: allowed routes carry the x-api-key; other routes are 403", async () =>
   assert.equal(b.headers["x-api-key"], "secret-ai");
   assert.equal((await gw(KI_A, "/gw/ai/api/patch", { method: "POST", body: "{}" })).status, 403);
   assert.equal((await gw(KI_A, "/gw/ai/api/chat")).status, 403);
+});
+
+test("ksv: only GET /api is forwarded, with the gateway token added by KI", async () => {
+  const r = await gw(KI_A, "/gw/ksv/api", { headers: { "x-gateway-token": "evil" } });
+  assert.equal(r.status, 200);
+  const b = await r.json();
+  assert.equal(b.url, "/api");
+  assert.equal(b.headers["x-gateway-token"], "secret-ksv");
+});
+
+test("ksv: device control and everything else is 403", async () => {
+  for (const [m, p] of [
+    ["GET", "/gw/ksv/"], ["GET", "/gw/ksv/api/ksv"], ["GET", "/gw/ksv/api/ksv/devices"],
+    ["POST", "/gw/ksv/api/ksv/commands"], ["POST", "/gw/ksv/api"], ["DELETE", "/gw/ksv/api"],
+    ["GET", "/gw/ksv/api/local/ai/health"], ["POST", "/gw/ksv/api/chat"],
+  ]) assert.equal((await gw(KI_A, p, { method: m })).status, 403, `${m} ${p}`);
+  assert.equal(await rawGet(KI_A, "/gw/ksv/api/../api/ksv"), 400);
+});
+
+test("ksv: missing GATEWAY_TOKEN is 503", async () => {
+  const r = await gw(KI_B, "/gw/ksv/api");
+  assert.equal(r.status, 503);
+  assert.match((await r.json()).error, /GATEWAY_TOKEN/);
 });

@@ -34,7 +34,7 @@
         ▼
  ┌──────────────────────── KI API :5001 ────────────────────────┐
  │ /v1  ច្រកមានកំណែ      /gw  gateway (default-deny)   /api  KI │
- │  ├─ alias → /gw        ├─ ai, cidc, lang, ei-t, iqai          │
+ │  ├─ alias → /gw        ├─ ai, cidc, lang, ei-t, iqai, ksv     │
  │  ├─ files, data (ផ្ទាល់ខ្លួន)                                │
  │  └─ keys, usage, system (token មេតែប៉ុណ្ណោះ)                   │
  └──────────────────────────────────────────────────────────────┘

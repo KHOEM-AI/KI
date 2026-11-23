@@ -36,6 +36,11 @@ const SERVICES = {
       ["POST", "/api/chat"],
     ],
   },
+  // KSV gateway (:4000): read-only. Only its public service list. Device control (/api/ksv/*) and /api/local/* are not forwarded.
+  ksv: {
+    api: "ksv-gateway", maxBody: 1024, timeoutMs: 10_000,
+    allow: [["GET", "/api"]],
+  },
   lang: {
     api: "khoem-ai-api", maxBody: MB, timeoutMs: 15_000,
     allow: [["GET", "/health"], ["GET", "/api/languages"], ["GET", "/api/locales"], ["GET", "/api/coverage"], ["POST", "/api/translate"]],

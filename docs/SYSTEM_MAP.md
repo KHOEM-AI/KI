@@ -49,7 +49,7 @@ KI ស្តាប់តែ `127.0.0.1`។ **គ្រប់ route លើកល�
 | GET | `/api/registry`, `/api/registry/<ឈ្មោះ>` | ឯកសារក្នុង `data/` (អានតែប៉ុណ្ណោះ) |
 | GET, POST | `/api/notify`, `/api/notifications`, `/api/status` | ការជូនដំណឹង និងស្ថានភាពសេវា |
 | * | `/v1/...` | ច្រកមានកំណែ (chat, search, translate, math, audio, videos, media, projects, files, data, keys, usage, system) |
-| * | `/gw/<សេវា>/...` | gateway ទៅសេវាផ្សេង (ai, cidc, lang, ei-t, iqai) ដែលអនុញ្ញាតតែ route ក្នុងបញ្ជី |
+| * | `/gw/<សេវា>/...` | gateway ទៅសេវាផ្សេង (ai, cidc, lang, ei-t, iqai, ksv) ដែលអនុញ្ញាតតែ route ក្នុងបញ្ជី |
 
 ព័ត៌មានលម្អិត៖ `docs/API.md` និង `docs/ARCHITECTURE.md`។ កូដ៖ `KI/src/` (Node ធម្មតា គ្មាន dependency)។ ទិន្នន័យទុកក្នុង `~/.ki-*.json` (មិនឡើង GitHub)។
 
