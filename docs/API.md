@@ -1,10 +1,10 @@
 # KI API
 
-How other apps and pages read data from the KHOEM-AI system. Two layers: static JSON registry (KI) and the live API (KSV).
+How other apps and pages read data from the KHOEM-AI system. KI is the central API (registry, `/gw` gateway, `/v1`); KSV is the live device API. See `docs/ARCHITECTURE.md`.
 
 ## 1. KI registry (read-only JSON)
 
-No login. Start from the index, it lists every file:
+The GitHub copy needs no login (on the phone, KI needs the token, see below). Start from the index, it lists every file:
 
 ```
 curl https://raw.githubusercontent.com/KHOEM-AI/KI/main/data/index.json
@@ -50,7 +50,7 @@ curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:3000/api/devices
 
 ### Routes (128, generated from src/server.ts, not individually verified)
 
-Routes whose path is built in code are not listed.
+Routes whose path is built in code are not listed. The list is generated, so it may contain artifacts (a `${verb}` placeholder, a trailing-slash path, a duplicated `GET /api/gateways`): treat it as a guide, not a contract.
 
 #### /api/certificates
 
@@ -325,10 +325,10 @@ Routes whose path is built in code are not listed.
 - Run `npm run validate` before every push.
 
 
-## 3. Clients
+## 4. Clients
 
 - MI-K-VISION-3D (:5176) reaches KI through a Vite proxy, `/ki/api/*` to `http://127.0.0.1:5001/api/*`. The proxy allows only: GET healthz, registry, registry/device-types, scans, colors, and POST scans, colors. Everything else returns 403 (see `vite.config.mjs` there).
-- KI has no login and answers every origin (`Access-Control-Allow-Origin: *`). It listens on 127.0.0.1 only. Do not expose it on the LAN.
+- Every KI route except `GET /api/healthz` needs the `x-ki-token` header. KI answers every origin (`Access-Control-Allow-Origin: *`) and listens on 127.0.0.1 only. Do not expose it on the LAN.
 
 ## KI gateway (own services only)
 
@@ -368,7 +368,7 @@ One stable front door for apps and the AI UI. Every route needs `x-ki-token`; wi
 
 - Module routes are forwarded by the gateway, so its allowlist (default deny), loopback rule and server-side credentials apply. A method the gateway does not allow answers 403.
 - Names: collection `a-z 0-9 -` (max 32), document id `A-Za-z0-9 _ . -` (max 64, starts with a letter or digit). Downloads are always `attachment` with `nosniff`.
-- Not included on purpose: user accounts, payments, a generic database or admin API. They need their own design and review.
+- Not included on purpose: user accounts, payments or a generic database. Developer keys, usage and system (below) are admin routes for the master token. They need their own design and review.
 
 ```
 curl -H "x-ki-token: $T" -H "Content-Type: application/json" -d '{"title":"hi"}' -X PUT http://127.0.0.1:5001/v1/data/notes/n1

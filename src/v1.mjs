@@ -6,6 +6,15 @@ import { randomBytes } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { SCOPES, listKeys, createKey, revokeKey } from "./keys.mjs";
 import { checkAll } from "./status.mjs";
+import {
+  databaseHealth,
+  databaseList,
+  databaseFind,
+  databaseGet,
+  databaseInsert,
+  databaseUpdate,
+  databaseDelete
+} from "./database.mjs";
 
 const MB = 1024 * 1024;
 const MAX_FILE = 20 * MB, MAX_FILES = 500;
@@ -37,6 +46,8 @@ const INDEX = {
     "/v1/audio/*", "/v1/videos/*", "/v1/media", "/v1/projects",
     "GET,POST /v1/files", "GET,DELETE /v1/files/<id>",
     "GET /v1/data", "GET /v1/data/<collection>", "GET,PUT,DELETE /v1/data/<collection>/<id>",
+    "GET /v1/database", "GET /v1/database/health",
+    "GET,POST /v1/database/<collection>", "GET,PUT,DELETE /v1/database/<collection>/<id>",
     "master token only: GET,POST /v1/keys", "DELETE /v1/keys/<id>", "GET /v1/usage", "GET /v1/system",
   ],
 };
@@ -157,6 +168,114 @@ async function data(req, res, send, sub) {
 }
 
 
+// ---------- /v1/database ----------
+async function databaseRoute(req, res, send, sub) {
+  try {
+    if (sub === "/database/health") {
+      if (req.method !== "GET") {
+        return send(res, 405, { error: "method not allowed" });
+      }
+      return send(res, 200, await databaseHealth());
+    }
+
+    if (sub === "/database") {
+      if (req.method !== "GET") {
+        return send(res, 405, { error: "method not allowed" });
+      }
+      return send(res, 200, {
+        service: "KI_DATABASE",
+        collections: await databaseList()
+      });
+    }
+
+    const parts = sub.split("/").filter(Boolean);
+    if (parts.length < 2 || parts.length > 3 || parts[0] !== "database") {
+      return send(res, 400, { error: "invalid database route" });
+    }
+
+    const collection = parts[1];
+    const id = parts[2];
+
+    if (!/^[a-z][a-z0-9_]{0,63}$/.test(collection)) {
+      return send(res, 400, { error: "invalid collection" });
+    }
+
+    if (id === undefined) {
+      if (req.method === "GET") {
+        const items = await databaseFind(collection);
+        return send(res, 200, {
+          collection,
+          count: items.length,
+          items
+        });
+      }
+
+      if (req.method === "POST") {
+        if (tooBig(req, MAX_DOC)) {
+          return send(res, 413, { error: "document too large (max 64 KB)" });
+        }
+
+        const doc = await readDoc(req);
+        if (!doc || typeof doc !== "object" || Array.isArray(doc)) {
+          return send(res, 400, { error: "document must be a JSON object" });
+        }
+
+        const created = await databaseInsert(collection, doc);
+        return send(res, 201, { ok: true, document: created });
+      }
+
+      return send(res, 405, { error: "method not allowed" });
+    }
+
+    if (!/^[a-f0-9-]{36}$/i.test(id)) {
+      return send(res, 400, { error: "invalid document id" });
+    }
+
+    if (req.method === "GET") {
+      const doc = await databaseGet(collection, id);
+      return doc
+        ? send(res, 200, doc)
+        : send(res, 404, { error: "document not found" });
+    }
+
+    if (req.method === "PUT") {
+      if (tooBig(req, MAX_DOC)) {
+        return send(res, 413, { error: "document too large (max 64 KB)" });
+      }
+
+      const doc = await readDoc(req);
+      if (!doc || typeof doc !== "object" || Array.isArray(doc)) {
+        return send(res, 400, { error: "document must be a JSON object" });
+      }
+
+      const updated = await databaseUpdate(collection, id, doc);
+      return updated
+        ? send(res, 200, { ok: true, document: updated })
+        : send(res, 404, { error: "document not found" });
+    }
+
+    if (req.method === "DELETE") {
+      const deleted = await databaseDelete(collection, id);
+      return deleted
+        ? send(res, 200, { ok: true, deleted: id })
+        : send(res, 404, { error: "document not found" });
+    }
+
+    return send(res, 405, { error: "method not allowed" });
+  } catch (error) {
+    const code = error.message || "";
+    const status =
+      code === "INVALID_COLLECTION" || code === "INVALID_ID" ||
+      code === "INVALID_DOCUMENT" || code === "PROTECTED_FIELD" ? 400 :
+      code === "DOCUMENT_TOO_LARGE" ? 413 :
+      code === "COLLECTION_LIMIT" ? 409 : 500;
+
+    return send(res, status, {
+      error: status === 500 ? "database error" : code
+    });
+  }
+}
+
 // ---------- master token only: /v1/keys, /v1/usage, /v1/system ----------
 async function keysRoute(req, res, send, sub) {
   if (sub === "/keys") {
@@ -261,6 +380,7 @@ export function handleV1(req, res, send, { tokenSet, gateway }) {
   const own = sub === "/keys" || sub.startsWith("/keys/") ? () => keysRoute(req, res, send, sub)
     : sub === "/usage" ? async () => (req.method === "GET" ? usage(res, send, query) : send(res, 405, { error: "method not allowed" }))
     : sub === "/system" ? async () => (req.method === "GET" ? system(res, send, query) : send(res, 405, { error: "method not allowed" }))
+    : sub === "/database" || sub.startsWith("/database/") ? () => databaseRoute(req, res, send, sub)
     : sub === "/files" || sub.startsWith("/files/") ? () => files(req, res, send, sub, query)
     : sub === "/data" || sub.startsWith("/data/") ? () => data(req, res, send, sub)
     : null;
