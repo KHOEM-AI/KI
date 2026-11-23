@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "site": "https://khoem-ai.github.io/VTH/",
+  "certificates": [
+    {
+      "file": "intro-to-python.jpg",
+      "title": "Introduction to Python",
+      "issued": "27 May 2026",
+      "track": "Language"
+    },
+    {
+      "file": "tech-for-everyone.jpg",
+      "title": "Tech for Everyone",
+      "issued": "12 Aug 2026",
+      "track": "Practice"
+    },
+    {
+      "file": "intro-to-java.jpg",
+      "title": "Introduction to Java",
+      "issued": "11 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "intro-to-c.jpg",
+      "title": "Introduction to C",
+      "issued": "13 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "critical-thinking-ai-era.jpg",
+      "title": "Critical Thinking — AI Era Practice",
+      "issued": "13 Aug 2026",
+      "track": "Practice"
+    },
+    {
+      "file": "python-intermediate.jpg",
+      "title": "Python Intermediate",
+      "issued": "13 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "java-intermediate.jpg",
+      "title": "Java Intermediate",
+      "issued": "15 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "c-intermediate.jpg",
+      "title": "C Intermediate",
+      "issued": "16 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "cpp-intermediate.jpg",
+      "title": "C++ Intermediate",
+      "issued": "16 Aug 2026",
+      "track": "Language"
+    },
+    {
+      "file": "sql-intermediate.jpg",
+      "title": "SQL Intermediate",
+      "issued": "16 Aug 2026",
+      "track": "Language"
+    }
+  ]
+}

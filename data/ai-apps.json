@@ -35,6 +35,13 @@
       "api_id": "ki-api",
       "url": "http://127.0.0.1:5176",
       "enabled": true
+    },
+    {
+      "id": "vth-portfolio",
+      "name": "VTH Portfolio (certificates)",
+      "api_id": "ki-api",
+      "url": "https://khoem-ai.github.io/VTH/",
+      "enabled": true
     }
   ]
 }
