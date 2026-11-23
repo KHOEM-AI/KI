@@ -16,13 +16,13 @@ const apisA = { apis: [
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { auth: "bearer", env_key: "IQAI_TOKEN" }),
   svc("khoem-ai-api", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "LANG_KEY" }),
   svc("ai-backend", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-api-key", env_key: "KHOEM_API_KEY" }),
-  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "KHOEM_AI_API_KEY" }),
+  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "KSV_GATEWAY_TOKEN" }),
 ] };
 const apisB = { apis: [
   svc("cidc-api", "http://example.com:80", { auth: "bearer", env_key: "CIDC_TOKEN" }),
   svc("ei-t", `http://127.0.0.1:${DEAD}`),
   svc("iqai-media", `http://127.0.0.1:${UP}/api/v1`, { enabled: false }),
-  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "KHOEM_AI_API_KEY" }),
+  svc("ksv-gateway", `http://127.0.0.1:${UP}`, { auth: "header", auth_header: "x-gateway-token", env_key: "KSV_GATEWAY_TOKEN" }),
 ] };
 
 const seen = [];
@@ -59,8 +59,8 @@ before(async () => {
       res.end(body);
     });
   }).listen(UP, "127.0.0.1");
-  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "", KHOEM_API_KEY: "secret-ai", KHOEM_AI_API_KEY: "secret-ksv" });
-  await startKi(KI_B, apisB, { CIDC_TOKEN: "secret-cidc", KHOEM_AI_API_KEY: "" });
+  await startKi(KI_A, apisA, { CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", LANG_KEY: "", KHOEM_API_KEY: "secret-ai", KSV_GATEWAY_TOKEN: "secret-ksv" });
+  await startKi(KI_B, apisB, { CIDC_TOKEN: "secret-cidc", KSV_GATEWAY_TOKEN: "" });
   await startKi(KI_C, apisA, { KI_API_TOKEN: "" });
 });
 after(() => {
@@ -193,8 +193,8 @@ test("ksv: device control and everything else is 403", async () => {
   assert.equal(await rawGet(KI_A, "/gw/ksv/api/../api/ksv"), 400);
 });
 
-test("ksv: missing KHOEM_AI_API_KEY is 503", async () => {
+test("ksv: missing KSV_GATEWAY_TOKEN is 503", async () => {
   const r = await gw(KI_B, "/gw/ksv/api");
   assert.equal(r.status, 503);
-  assert.match((await r.json()).error, /KHOEM_AI_API_KEY/);
+  assert.match((await r.json()).error, /KSV_GATEWAY_TOKEN/);
 });
