@@ -264,11 +264,12 @@ async function databaseRoute(req, res, send, sub) {
     return send(res, 405, { error: "method not allowed" });
   } catch (error) {
     const code = error.message || "";
-    const status =
-      code === "INVALID_COLLECTION" || code === "INVALID_ID" ||
-      code === "INVALID_DOCUMENT" || code === "PROTECTED_FIELD" ? 400 :
-      code === "DOCUMENT_TOO_LARGE" ? 413 :
-      code === "COLLECTION_LIMIT" ? 409 : 500;
+    const status = error.status ??
+      (code === "INVALID_COLLECTION" || code === "INVALID_ID" ||
+       code === "INVALID_DOCUMENT" || code === "PROTECTED_FIELD" ||
+       code === "bad json" ? 400 :
+       code === "DOCUMENT_TOO_LARGE" || code === "too large" ? 413 :
+       code === "COLLECTION_LIMIT" ? 409 : 500);
 
     return send(res, status, {
       error: status === 500 ? "database error" : code

@@ -222,6 +222,10 @@ export async function databaseUpdate(collection, id, input) {
       updatedAt: new Date().toISOString()
     };
 
+    if (Buffer.byteLength(JSON.stringify(docs[index])) > MAX_DOC_SIZE) {
+      throw new Error("DOCUMENT_TOO_LARGE");
+    }
+
     await writeCollection(collection, docs);
 
     return docs[index];
