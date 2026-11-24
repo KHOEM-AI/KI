@@ -14,8 +14,8 @@
 | ភាសា / បកប្រែ | ✅ | `POST /v1/translate`, `GET /v1/languages` → KHOEM_AI `:8790` |
 | គណិតវិទ្យា | ✅ | `POST /v1/math` → EI-T `:3100` |
 | សំឡេង វីដេអូ Media | ✅ | `/v1/audio/*`, `/v1/videos/*`, `/v1/media`, `/v1/projects` → IQ-AI `:8799` |
-| Database | ✅ (ឯកសារ JSON) | `/v1/data/<collection>/<id>` (ក្នុង `~/.ki-data-*.json`) |
-| Storage & Files | ✅ | `/v1/files` (ក្នុង `~/.ki-files/`) |
+| Database | ✅ SQLite មួយឯកសារ | `/v1/data/<collection>/<id>` · ទិន្នន័យ KI ទាំងអស់នៅ `~/.ki/ki.db` (មើលផ្នែក ៦) |
+| Storage & Files | ✅ | `/v1/files` (បញ្ជីក្នុង database, ឯកសារក្នុង `~/.ki/files/`) |
 | Auth & Users | ✅ ផ្នែកដំបូង | Developer keys៖ `/v1/keys` (key មានវិសាលភាព, ដកបាន, មានកំណត់អត្រា)។ គណនីអ្នកប្រើដែលមាន password ⏳ |
 | Developer Account | ✅ ផ្នែកដំបូង | key មួយក្នុងមួយកម្មវិធី (`name`, `scopes`, `last_used`, `count`) |
 | API Usage Statistics | ✅ | `GET /v1/usage?days=7` (ពី access log, គ្មានទិន្នន័យថ្មីត្រូវប្រមូល) |
@@ -60,14 +60,23 @@
 
 **Integration API (សេវាក្រៅ)**៖ ច្បាប់បច្ចុប្បន្នហាមសេវាក្រៅ។ បើចង់បើក ត្រូវសម្រេចជាមុន៖ បញ្ជីដែនអនុញ្ញាតច្បាស់លាស់, ចេញក្រៅតែប៉ុណ្ណោះ, secret ក្នុង `.env`។ មិនបើកដោយស្វ័យប្រវត្តិទេ។
 
-**Database ធំជាងនេះ**៖ ឯកសារ JSON គ្រប់គ្រាន់សម្រាប់ការកំណត់ កំណត់ត្រា (≤1000 ឯកសារ/collection, ≤64 KB)។ បើលើសពីនេះ ត្រូវប្តូរម៉ាស៊ីនក្រោយ `/v1/data` ដដែល (ឧ. SQLite ក្នុង Node ថ្មី — ត្រូវសាកល្បងលើ Termux មុន)។ KSV API ត្រូវការ `DATABASE_URL` (MongoDB) ដាច់ដោយឡែក ហើយឥឡូវនៅទទេ។
+**Database ធំជាងនេះ**៖ ដែនកំណត់បច្ចុប្បន្ន ≤1000 ឯកសារ/collection និង ≤64 KB/ឯកសារ។ ឥឡូវ collection ទាំងមូលត្រូវបានសរសេរជា JSON មួយជួរក្នុង SQLite ដូច្នេះមិនទាន់មាន query តាមវាល (field) ទេ។ បើត្រូវការ ត្រូវបំបែកជាតារាងមួយឯកសារមួយជួរ ក្រោម `/v1/data` ដដែល។ KSV API ត្រូវការ `DATABASE_URL` (MongoDB) ដាច់ដោយឡែក ហើយឥឡូវនៅទទេ។
 
 ## ៥. លំដាប់ការងារបន្ទាប់
 
 1. ជួសជុល KSV API (`DATABASE_URL`) រួចបន្ថែម `ksv` អានតែប៉ុណ្ណោះ (health/version) ក្នុង gateway។
-2. បំបែក `/v1/data` និង `/v1/files` តាម key (namespace ក្នុងមួយ key)។
+2. បំបែក `/v1/data` និង `/v1/files` តាម key (namespace ក្នុងមួយ key)។ ឥឡូវ database តែមួយរួចហើយ ការងារនេះងាយជាងមុន។
 3. គណនីអ្នកប្រើ + role (រចនា → តេស្ត → push)។
 4. Plugin manifest + alias ដំបូង (ឧ. CAI ឬ MI-K-VISION-3D បើមាន API)។
 5. Payment បន្ទាប់ពីសម្រេចអ្នកផ្តល់សេវា។
+
+## ៦. KHOEM-AI DATABASE (ទិន្នន័យទាំងអស់នៅកន្លែងតែមួយ)
+
+- **ឯកសារតែមួយ `~/.ki/ki.db`** (SQLite ដែលភ្ជាប់មកជាមួយ Node, គ្មាន dependency, សិទ្ធិ 600) រក្សា៖ colors, scans, notifications, developer keys, `/v1/data` ទាំងអស់ និងបញ្ជីឯកសារ។ ឯកសារដែលបាន upload នៅ `~/.ki/files/`។ access log នៅជាអត្ថបទ (`~/.ki-access.jsonl`)។
+- ចាប់ផ្ដើមដំបូង៖ ឯកសារចាស់ `~/.ki-*.json` និង `~/.ki-files/` ត្រូវបានចម្លងចូលម្ដង។ ឯកសារចាស់មិនត្រូវបានលុប ឬកែទេ (ជា backup)។
+- ប្រសិនបើ Node គ្មាន `node:sqlite` ឬដាក់ `KI_STORAGE=json` ក្នុង `.env` KI ប្រើ JSON ចាស់វិញ។ `GET /v1/system` បង្ហាញ `storage.engine`។
+- **Backup**៖ `npm run backup` → `~/KI-backups/ki-<ថ្ងៃ-ម៉ោង>/`។ **Restore**៖ បិទ KI → ចម្លង `ki.db` ទៅ `~/.ki/ki.db` និង `files/` ទៅ `~/.ki/files/` → លុប `ki.db-wal` និង `ki.db-shm` → បើក KI។
+- `/v1/database` (users, projects, plugins, integrations, developer_accounts, api_usage) ក៏នៅក្នុង `ki.db` តែមួយ។ `~/.ki-database/*.json` ចាស់ត្រូវបានចម្លងចូលម្ដង ហើយមិនត្រូវបានលុបទេ។
+- មិនទាន់ដាក់ក្នុង database៖ module ផ្សេងៗ (CIDC, IQ-AI, AI backend, KSV) ដែលមាន storage ផ្ទាល់ខ្លួន។ ពួកវាមិនត្រូវបានប៉ះពាល់ទេ។
 
 _ធ្វើបច្ចុប្បន្នភាព៖ 2026-11-23_

@@ -1,27 +1,25 @@
 // KI developer keys: scoped, revocable keys for apps, in addition to the one master token (x-ki-token).
 // A key is sent as header x-ki-key, works only on /v1/<scope> routes, and is rate limited.
-// Only a SHA-256 hash is stored (~/.ki-keys.json, mode 600); the key itself is shown once, at creation.
+// Only a SHA-256 hash is stored (in the KI database, src/db.mjs); the key itself is shown once, at creation.
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
-import { existsSync, readFileSync, writeFileSync, renameSync, chmodSync } from "node:fs";
+import { makeStore } from "./db.mjs";
 
 export const SCOPES = ["chat", "search", "translate", "math", "media", "files", "data"];
 const MAX_KEYS = 50;
 const WINDOW_MS = 60_000;
 const rateLimit = () => Math.max(1, Number(process.env.KI_KEY_RATE_PER_MIN) || 120);
 
-const file = () => `${process.env.HOME ?? "."}/.ki-keys.json`;
+const store = makeStore("keys");
 const sha = (s) => createHash("sha256").update(s).digest();
 const hex = (b) => b.toString("hex");
 
 let cache = null;
 const keys = () => {
-  if (cache) return cache;
-  try { const a = existsSync(file()) ? JSON.parse(readFileSync(file(), "utf8")) : []; cache = Array.isArray(a) ? a : []; }
-  catch { cache = []; }
+  if (!cache) { const a = store.load([]); cache = Array.isArray(a) ? a : []; }
   return cache;
 };
 const flush = () => {
-  try { writeFileSync(file() + ".tmp", JSON.stringify(keys()), { mode: 0o600 }); renameSync(file() + ".tmp", file()); chmodSync(file(), 0o600); }
+  try { store.save(keys()); }
   catch { /* a failing write must never break a request */ }
 };
 let timer = null;

@@ -13,3 +13,9 @@ package-lock.json
 *.bak-*
 *.bak2-*
 state.json
+
+# KI database and backups (never in git)
+*.db
+*.db-wal
+*.db-shm
+KI-backups/

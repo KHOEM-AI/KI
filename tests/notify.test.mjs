@@ -1,7 +1,8 @@
 import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync, readFileSync } from "node:fs";
+import { mkdtempSync, rmSync } from "node:fs";
+import { readStored } from "./stored.mjs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -106,7 +107,7 @@ test("over the limit the oldest READ item goes first, unread alerts are kept", a
   assert.deepEqual(titles, ["E", "D", "C"]); // everything unread: oldest dropped
 });
 
-test("stored on this device only, in the home folder", () => {
-  const stored = JSON.parse(readFileSync(join(homeA, ".ki-notifications.json"), "utf8"));
+test("stored on this device only, in the home folder", async () => {
+  const stored = JSON.parse(await readStored(homeA, "notifications"));
   assert.ok(Array.isArray(stored) && stored.length >= 2);
 });

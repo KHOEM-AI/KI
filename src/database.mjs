@@ -1,9 +1,15 @@
+// KI database for the platform collections (users, projects, plugins, ...), used by /v1/database.
+// It keeps the same rules as before (whitelisted collections, UUID ids, 64 KB per document, 1000 per collection)
+// but stores the documents in the ONE KI database (src/db.mjs, ~/.ki/ki.db) instead of its own folder.
+// The first time a collection is read, the older file ~/.ki-database/<collection>.json is copied in once
+// and left untouched, so nothing is lost and it stays as a backup.
 import crypto from "node:crypto";
-import fs from "node:fs/promises";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { makeStore, engine } from "./db.mjs";
 
-const DATA_DIR = path.join(os.homedir(), ".ki-database");
+const OLD_DIR = () => path.join(process.env.HOME ?? os.homedir(), ".ki-database");
 
 const COLLECTIONS = new Set([
   "users",
@@ -18,87 +24,56 @@ const MAX_DOC_SIZE = 64 * 1024;
 const MAX_DOCS = 1000;
 
 const queues = new Map();
+const stores = new Map();
 
 function validateCollection(name) {
-  if (
-    typeof name !== "string" ||
-    !COLLECTIONS.has(name)
-  ) {
+  if (typeof name !== "string" || !COLLECTIONS.has(name)) {
     throw new Error("INVALID_COLLECTION");
   }
-
   return name;
 }
 
 function validateId(id) {
-  if (
-    typeof id !== "string" ||
-    !/^[a-f0-9-]{36}$/i.test(id)
-  ) {
+  if (typeof id !== "string" || !/^[a-f0-9-]{36}$/i.test(id)) {
     throw new Error("INVALID_ID");
   }
-
   return id;
 }
 
-async function ensureDirectory() {
-  await fs.mkdir(DATA_DIR, {
-    recursive: true,
-    mode: 0o700
-  });
+// Stored under the name "database-<collection>" (never starts with "data-", so /v1/data does not list it).
+const storeFor = (name) => {
+  if (!stores.has(name)) stores.set(name, makeStore("database-" + name));
+  return stores.get(name);
+};
+
+// The previous version kept ~/.ki-database/<collection>.json. Returns its documents, or [] when there is nothing usable.
+function oldDocuments(name) {
+  const file = path.join(OLD_DIR(), `${name}.json`);
+  try {
+    if (!existsSync(file)) return [];
+    const docs = JSON.parse(readFileSync(file, "utf8"));
+    return Array.isArray(docs) ? docs : [];
+  } catch {
+    return []; // broken old file: leave it alone, start empty
+  }
 }
 
 async function readCollection(name) {
   validateCollection(name);
-  await ensureDirectory();
-
-  const file = path.join(DATA_DIR, `${name}.json`);
-
-  try {
-    const raw = await fs.readFile(file, "utf8");
-    const docs = JSON.parse(raw);
-
-    if (!Array.isArray(docs)) {
-      throw new Error("DATABASE_CORRUPTED");
-    }
-
-    return docs;
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      return [];
-    }
-
-    throw error;
+  const store = storeFor(name);
+  let docs = store.load(null);
+  if (docs === null) {
+    docs = oldDocuments(name);
+    if (docs.length) store.save(docs); // copied in once; the old file stays
   }
+  if (!Array.isArray(docs)) throw new Error("DATABASE_CORRUPTED");
+  return docs;
 }
 
 async function writeCollection(name, docs) {
   validateCollection(name);
-
-  if (docs.length > MAX_DOCS) {
-    throw new Error("COLLECTION_LIMIT");
-  }
-
-  await ensureDirectory();
-
-  const file = path.join(DATA_DIR, `${name}.json`);
-  const temp = `${file}.${crypto.randomUUID()}.tmp`;
-
-  try {
-    await fs.writeFile(
-      temp,
-      JSON.stringify(docs, null, 2),
-      {
-        encoding: "utf8",
-        mode: 0o600,
-        flag: "wx"
-      }
-    );
-
-    await fs.rename(temp, file);
-  } finally {
-    await fs.rm(temp, { force: true }).catch(() => {});
-  }
+  if (docs.length > MAX_DOCS) throw new Error("COLLECTION_LIMIT");
+  storeFor(name).save(docs);
 }
 
 async function withLock(name, callback) {
@@ -125,12 +100,11 @@ async function withLock(name, callback) {
 }
 
 export async function databaseHealth() {
-  await ensureDirectory();
-
   return {
     ok: true,
     service: "KI_DATABASE",
     storage: "local",
+    engine: engine(),
     collections: COLLECTIONS.size
   };
 }
@@ -151,11 +125,7 @@ export async function databaseGet(collection, id) {
 export async function databaseInsert(collection, input) {
   validateCollection(collection);
 
-  if (
-    !input ||
-    typeof input !== "object" ||
-    Array.isArray(input)
-  ) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
     throw new Error("INVALID_DOCUMENT");
   }
 
@@ -190,11 +160,7 @@ export async function databaseUpdate(collection, id, input) {
   validateCollection(collection);
   validateId(id);
 
-  if (
-    !input ||
-    typeof input !== "object" ||
-    Array.isArray(input)
-  ) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
     throw new Error("INVALID_DOCUMENT");
   }
 

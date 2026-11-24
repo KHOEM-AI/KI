@@ -389,6 +389,14 @@ curl -H "x-ki-token: $T" --data-binary @photo.jpg "http://127.0.0.1:5001/v1/file
 
 A developer key goes in header `x-ki-key`. It works only on `/v1/<scope>` routes of its scopes (`chat` `search` `translate` `math` `media` `files` `data`), never on `/api`, `/gw`, `/v1/keys`, `/v1/usage` or `/v1/system` (403). Wrong, missing or revoked key: 401. More than `KI_KEY_RATE_PER_MIN` (default 120) requests in a minute: 429. Only a SHA-256 hash is stored, in `~/.ki-keys.json` (mode 600). Keys with `data` or `files` see every collection and file. See `docs/ARCHITECTURE.md` for the plan and what is not built yet.
 
+## KI storage (one place for all data)
+
+Colors, scans, notifications, developer keys, `/v1/data`, `/v1/database` and the list of `/v1/files` live in **one SQLite file, `~/.ki/ki.db`** (Node's built-in `node:sqlite`, no dependency, mode 600). Uploaded file bytes are in `~/.ki/files/`. The access log stays a text file (`~/.ki-access.jsonl`, rotated).
+
+- First start after the upgrade: the old `~/.ki-colors.json`, `.ki-scans.json`, `.ki-notifications.json`, `.ki-keys.json`, `.ki-data-*.json`, `~/.ki-database/*.json` and files from `~/.ki-files/` are copied in once. The old files are never deleted or changed.
+- If `node:sqlite` is missing, or `KI_STORAGE=json` is set in `.env`, KI uses the older JSON files instead (`GET /v1/system` shows `storage.engine`).
+- Backup: `npm run backup` (or `node scripts/backup.mjs [folder]`) writes a consistent copy to `~/KI-backups/ki-<date>-<time>/`. Restore: stop KI, copy `ki.db` to `~/.ki/ki.db` and `files/` to `~/.ki/files/`, delete `~/.ki/ki.db-wal` and `ki.db-shm`, start KI.
+
 ## KI notifications and status
 
 Both need `x-ki-token` (when `KI_API_TOKEN` is set). Nothing leaves the phone: events are stored in `~/.ki-notifications.json` (newest 500; when full, read items are dropped first so unread alerts are kept).

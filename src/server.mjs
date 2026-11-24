@@ -3,13 +3,14 @@
 // Versioned API: /v1/... (see src/v1.mjs)
 // Registry (read-only): GET /api/registry | GET /api/registry/<file name from data/index.json, without .json>
 import http from "node:http";
-import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { timingSafeEqual } from "node:crypto";
 import { makeAccessLog } from "./accesslog.mjs";
 import { fileURLToPath } from "node:url";
 import { handleGateway } from "./gateway.mjs";
 import { handleV1 } from "./v1.mjs";
 import { authorizeKey } from "./keys.mjs";
+import { makeStore } from "./db.mjs";
 import { handleNotify } from "./notify.mjs";
 import { handleStatus } from "./status.mjs";
 import { startWatcher } from "./watch.mjs";
@@ -29,17 +30,8 @@ const accessLog = makeAccessLog(HOME);
 const PORT = Number(process.env.PORT ?? 5001);
 const MAX_BODY = 8 * 1024 * 1024;
 
-const store = (name) => {
-  const f = `${HOME}/.ki-${name}.json`;
-  return {
-    load() {
-      try { return existsSync(f) ? JSON.parse(readFileSync(f, "utf8")) : []; } catch { return []; }
-    },
-    save(a) { writeFileSync(f + ".tmp", JSON.stringify(a)); renameSync(f + ".tmp", f); },
-  };
-};
-const colors = store("colors");
-const scans = store("scans");
+const colors = makeStore("colors"); // all KI data lives in one place: see src/db.mjs
+const scans = makeStore("scans");
 
 const send = (res, code, obj) => {
   res.writeHead(code, {

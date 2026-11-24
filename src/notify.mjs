@@ -1,19 +1,17 @@
 // KI notifications (/api/notify, /api/notifications): services and scripts post events, the UI reads them.
-// Own device only: events live in ~/.ki-notifications.json and are never sent anywhere.
-import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
+// Own device only: events live in the KI database (src/db.mjs) and are never sent anywhere.
 import { randomUUID } from "node:crypto";
+import { makeStore } from "./db.mjs";
 
-const FILE = `${process.env.HOME ?? "."}/.ki-notifications.json`;
+const store = makeStore("notifications");
 const LIMIT = Number.isInteger(Number(process.env.KI_NOTIFY_LIMIT)) && Number(process.env.KI_NOTIFY_LIMIT) > 0 ? Number(process.env.KI_NOTIFY_LIMIT) : 500;
 const MAX_BODY = 16 * 1024;
 const LEVELS = ["info", "warn", "error", "critical"];
 const SOURCE = /^[a-z0-9][a-z0-9._-]{0,63}$/i;
 const ROUTES = new Set(["POST /api/notify", "GET /api/notifications", "POST /api/notifications/read"]);
 
-const load = () => {
-  try { const a = existsSync(FILE) ? JSON.parse(readFileSync(FILE, "utf8")) : []; return Array.isArray(a) ? a : []; } catch { return []; }
-};
-const save = (a) => { writeFileSync(FILE + ".tmp", JSON.stringify(a), { mode: 0o600 }); renameSync(FILE + ".tmp", FILE); };
+const load = () => { const a = store.load([]); return Array.isArray(a) ? a : []; };
+const save = (a) => store.save(a);
 
 // Over the limit: drop the oldest READ item first, so an unread alert is lost only when everything is unread.
 function trim(a) {

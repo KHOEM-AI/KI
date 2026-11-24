@@ -107,13 +107,58 @@ test("files: upload, list, download, delete", async () => {
   assert.equal((await v1("/files/" + file.id)).status, 404);
 });
 
+test("files: developer keys can only access their own files", async () => {
+  const createA = await json("POST", "/keys", { name: "files-A", scopes: ["files"] });
+  const createB = await json("POST", "/keys", { name: "files-B", scopes: ["files"] });
+  assert.equal(createA.status, 200);
+  assert.equal(createB.status, 200);
+
+  const a = (await createA.json()).key;
+  const b = (await createB.json()).key;
+
+  const asKey = (key, path, init = {}) => fetch(
+    `http://127.0.0.1:${KI}/v1${path}`,
+    { ...init, headers: { "x-ki-key": key, ...(init.headers ?? {}) } }
+  );
+
+  const uploadA = await asKey(a, "/files?name=A.txt", {
+    method: "POST", headers: { "Content-Type": "text/plain" }, body: "File A"
+  });
+  const uploadB = await asKey(b, "/files?name=B.txt", {
+    method: "POST", headers: { "Content-Type": "text/plain" }, body: "File B"
+  });
+
+  assert.equal(uploadA.status, 200);
+  assert.equal(uploadB.status, 200);
+
+  const fileA = (await uploadA.json()).file;
+  const fileB = (await uploadB.json()).file;
+
+  const listA = await (await asKey(a, "/files")).json();
+  const listB = await (await asKey(b, "/files")).json();
+
+  assert.deepEqual(listA.files.map(f => f.id), [fileA.id]);
+  assert.deepEqual(listB.files.map(f => f.id), [fileB.id]);
+
+  assert.equal((await asKey(a, "/files/" + fileB.id)).status, 404);
+  assert.equal((await asKey(a, "/files/" + fileB.id, { method: "DELETE" })).status, 404);
+  assert.equal((await asKey(b, "/files/" + fileB.id)).status, 200);
+
+  const masterFiles = await (await v1("/files")).json();
+  assert.ok(masterFiles.files.some(f => f.id === fileA.id));
+  assert.ok(masterFiles.files.some(f => f.id === fileB.id));
+
+  assert.equal((await asKey(a, "/files/" + fileA.id, { method: "DELETE" })).status, 200);
+  assert.equal((await asKey(b, "/files/" + fileB.id, { method: "DELETE" })).status, 200);
+});
+
 test("files: bad id is 400, over 20 MB is 413, stored in the home folder only", async () => {
   assert.equal((await v1("/files/..%2f..%2fetc")).status, 400);
   assert.equal((await v1("/files/abc")).status, 400);
   let status;
   try { status = (await v1("/files", { method: "POST", body: Buffer.alloc(21 * MB) })).status; } catch { status = 413; }
   assert.equal(status, 413);
-  assert.ok(existsSync(join(home, ".ki-files")));
+  assert.ok(existsSync(join(home, ".ki", "files")));
 });
 
 test("data: put, get, list, update, delete", async () => {

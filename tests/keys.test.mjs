@@ -2,7 +2,8 @@ import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync, readFileSync, statSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync, statSync, existsSync } from "node:fs";
+import { readStored, dbPath } from "./stored.mjs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -52,10 +53,11 @@ test("master creates a key; the key is shown once and only its hash is stored", 
   const list = await (await master("GET", "/v1/keys")).json();
   assert.ok(!JSON.stringify(list).includes(dev.key));
   assert.ok(list.scopes.includes("files"));
-  const disk = readFileSync(join(home, ".ki-keys.json"), "utf8");
+  const disk = await readStored(home, "keys");
   assert.ok(!disk.includes(dev.key));
   assert.match(disk, /"hash":"[a-f0-9]{64}"/);
-  assert.equal(statSync(join(home, ".ki-keys.json")).mode & 0o777, 0o600);
+  const file = existsSync(dbPath(home)) ? dbPath(home) : join(home, ".ki-keys.json");
+  assert.equal(statSync(file).mode & 0o777, 0o600);
 });
 
 test("bad key requests are 400", async () => {
@@ -128,6 +130,8 @@ test("system status: version, storage, keys; services only on request", async ()
   assert.match(s.version, /^\d+\.\d+\.\d+$/);
   assert.ok(s.keys.active >= 2 && s.keys.revoked >= 1);
   assert.ok(s.storage.collections >= 1);
+  assert.ok(["sqlite", "json"].includes(s.storage.engine));
+  assert.ok(!JSON.stringify(s).includes(home)); // no absolute path in the answer
   assert.equal(s.services, undefined);
   s = await (await master("GET", "/v1/system?services=1")).json();
   assert.equal(s.services.list.length, 2);

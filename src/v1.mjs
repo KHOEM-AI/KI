@@ -1,11 +1,12 @@
 // KI /v1: one stable, versioned front door to KHOEM-AI. No dependencies, token required (same x-ki-token).
 //  - Aliases to other modules go through the gateway, so its allowlist, loopback rule and credentials still apply.
-//  - /v1/files and /v1/data are KI's own storage (in the home folder, never in git).
-import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, readdirSync, unlinkSync, statSync, createReadStream } from "node:fs";
+//  - /v1/files, /v1/data and /v1/database are KI's own storage: the KI database in ~/.ki/ (src/db.mjs), never in git.
+import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, readdirSync, unlinkSync, statSync, createReadStream, copyFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { SCOPES, listKeys, createKey, revokeKey } from "./keys.mjs";
 import { checkAll } from "./status.mjs";
+import { makeStore, listNames, engine, location, sizeBytes, root } from "./db.mjs";
 import {
   databaseHealth,
   databaseList,
@@ -54,8 +55,8 @@ const INDEX = {
 };
 
 const home = () => process.env.HOME ?? ".";
-const filesDir = () => `${home()}/.ki-files`;
-const dataFile = (c) => `${home()}/.ki-data-${c}.json`;
+const filesDir = () => `${root()}/files`; // uploaded bytes; their list (metadata) is in the database
+const OLD_FILES = () => `${home()}/.ki-files`; // first version of /v1/files (before the database)
 const COLLECTION = /^[a-z0-9][a-z0-9-]{0,31}$/;
 const DOC_ID = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/;
 const FILE_ID = /^[a-f0-9]{24}$/;
@@ -82,47 +83,78 @@ const safeName = (s) => {
 const safeType = (s) => (/^[\w.+-]{1,60}\/[\w.+-]{1,60}$/.test(String(s ?? "")) ? String(s) : "application/octet-stream");
 
 // ---------- /v1/files ----------
+const filesMeta = makeStore("files"); // { <id>: { id, name, size, type, created } }
+let migrated = false;
+// One-time copy of files uploaded with the first version (~/.ki-files/<id>.bin + .json). The old folder is left as it is.
+function migrateOldFiles() {
+  if (migrated) return;
+  migrated = true;
+  const old = OLD_FILES();
+  if (!existsSync(old)) return;
+  const meta = filesMeta.load({});
+  let changed = false;
+  for (const f of readdirSync(old)) {
+    const id = /^([a-f0-9]{24})\.json$/.exec(f)?.[1];
+    if (!id || meta[id] || !existsSync(`${old}/${id}.bin`)) continue;
+    const m = readJsonFile(`${old}/${f}`, null);
+    if (!m || m.id !== id) continue;
+    mkdirSync(filesDir(), { recursive: true, mode: 0o700 });
+    copyFileSync(`${old}/${id}.bin`, `${filesDir()}/${id}`);
+    meta[id] = { id, name: safeName(m.name), size: Number(m.size) || 0, type: safeType(m.type), created: String(m.created ?? "") };
+    changed = true;
+  }
+  if (changed) filesMeta.save(meta);
+}
+
 async function files(req, res, send, sub, query) {
+  migrateOldFiles();
   const dir = filesDir();
   if (sub === "/files") {
     if (req.method === "GET") {
-      const items = existsSync(dir)
-        ? readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => readJsonFile(`${dir}/${f}`, null)).filter(Boolean)
-        : [];
+      const ownerId = req.kiKey?.id;
+      const items = Object.values(filesMeta.load({}))
+        .filter((f) => !ownerId || f.ownerId === ownerId);
       items.sort((a, b) => String(b.created).localeCompare(String(a.created)));
       return send(res, 200, { files: items.slice(0, MAX_FILES) });
     }
     if (req.method === "POST") {
       if (tooBig(req, MAX_FILE)) { res.once("finish", () => req.destroy()); return send(res, 413, { error: "file too large (max 20 MB)" }); }
-      mkdirSync(dir, { recursive: true, mode: 0o700 });
-      if (readdirSync(dir).filter((f) => f.endsWith(".json")).length >= MAX_FILES) return send(res, 409, { error: "file store is full" });
+      if (Object.keys(filesMeta.load({})).length >= MAX_FILES) return send(res, 409, { error: "file store is full" });
       const body = await readBody(req, MAX_FILE);
+      mkdirSync(dir, { recursive: true, mode: 0o700 });
       const id = randomBytes(12).toString("hex");
       const meta = {
         id, name: safeName(new URLSearchParams(query).get("name")), size: body.length,
         type: safeType(req.headers["content-type"]), created: new Date().toISOString(),
+        ...(req.kiKey ? { ownerId: req.kiKey.id } : {}),
       };
-      writeAtomic(`${dir}/${id}.bin`, body);
-      writeAtomic(`${dir}/${id}.json`, JSON.stringify(meta));
+      writeAtomic(`${dir}/${id}`, body);
+      const all = filesMeta.load({});
+      all[id] = meta;
+      filesMeta.save(all);
       return send(res, 200, { ok: true, file: meta });
     }
     return send(res, 405, { error: "method not allowed" });
   }
   const id = sub.slice("/files/".length);
   if (!FILE_ID.test(id)) return send(res, 400, { error: "bad file id" });
-  const meta = readJsonFile(`${dir}/${id}.json`, null);
-  if (!meta || !existsSync(`${dir}/${id}.bin`)) return send(res, 404, { error: "file not found" });
+  const all = filesMeta.load({});
+  const meta = Object.hasOwn(all, id) ? all[id] : null;
+  if (!meta || (req.kiKey && meta.ownerId !== req.kiKey.id) || !existsSync(`${dir}/${id}`))
+    return send(res, 404, { error: "file not found" });
   if (req.method === "GET") {
     res.writeHead(200, {
-      "Content-Type": meta.type, "Content-Length": statSync(`${dir}/${id}.bin`).size,
+      "Content-Type": meta.type, "Content-Length": statSync(`${dir}/${id}`).size,
       "Content-Disposition": `attachment; filename="${meta.name}"`,
       "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "sandbox",
       "Access-Control-Allow-Origin": "*",
     });
-    return createReadStream(`${dir}/${id}.bin`).on("error", () => res.destroy()).pipe(res);
+    return createReadStream(`${dir}/${id}`).on("error", () => res.destroy()).pipe(res);
   }
   if (req.method === "DELETE") {
-    unlinkSync(`${dir}/${id}.bin`); unlinkSync(`${dir}/${id}.json`);
+    delete all[id];
+    filesMeta.save(all);
+    try { unlinkSync(`${dir}/${id}`); } catch { /* already gone */ }
     return send(res, 200, { ok: true, deleted: id });
   }
   return send(res, 405, { error: "method not allowed" });
@@ -132,14 +164,14 @@ async function files(req, res, send, sub, query) {
 async function data(req, res, send, sub) {
   if (sub === "/data") {
     if (req.method !== "GET") return send(res, 405, { error: "method not allowed" });
-    const names = readdirSync(home()).map((f) => /^\.ki-data-(.+)\.json$/.exec(f)?.[1]).filter((c) => c && COLLECTION.test(c));
+    const names = listNames("data-").map((n) => n.slice(5)).filter((c) => COLLECTION.test(c));
     return send(res, 200, { collections: names.sort() });
   }
   const [, , c, id, extra] = sub.split("/");
   if (extra !== undefined || !COLLECTION.test(c ?? "")) return send(res, 400, { error: "bad collection name" });
-  const f = dataFile(c);
-  const load = () => new Map(Object.entries(readJsonFile(f, {})));
-  const save = (m) => writeAtomic(f, JSON.stringify(Object.fromEntries(m)));
+  const st = makeStore("data-" + c);
+  const load = () => { const o = st.load({}); return new Map(Object.entries(o && typeof o === "object" && !Array.isArray(o) ? o : {})); };
+  const save = (m) => st.save(Object.fromEntries(m));
   if (id === undefined) {
     if (req.method !== "GET") return send(res, 405, { error: "method not allowed" });
     const items = [...load()].map(([k, v]) => ({ id: k, ...v }));
@@ -341,14 +373,14 @@ function usage(res, send, query) {
 async function system(res, send, query) {
   const pkg = readJsonFile(fileURLToPath(new URL("../package.json", import.meta.url)), {});
   const k = listKeys();
-  const fdir = filesDir();
   const out = {
     service: "ki", version: pkg.version ?? null, node: process.version,
     uptime_s: Math.round(process.uptime()), port: Number(process.env.PORT ?? 5001),
     keys: { active: k.filter((x) => !x.revoked).length, revoked: k.filter((x) => x.revoked).length },
     storage: {
-      files: existsSync(fdir) ? readdirSync(fdir).filter((f) => f.endsWith(".json")).length : 0,
-      collections: readdirSync(home()).filter((f) => /^\.ki-data-[a-z0-9-]+\.json$/.test(f)).length,
+      engine: engine(), location: location(), bytes: sizeBytes(),
+      files: Object.keys(filesMeta.load({})).length,
+      collections: listNames("data-").length,
     },
   };
   if (new URLSearchParams(query).get("services") === "1") {

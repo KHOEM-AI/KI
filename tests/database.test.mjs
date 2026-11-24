@@ -1,7 +1,7 @@
 import test, { after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync, readFileSync, statSync } from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, readFileSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -67,18 +67,32 @@ test("a collection holds at most 1000 documents", async () => {
   assert.equal((await db.databaseFind("api_usage")).length, 1000);
 });
 
-test("files are private: folder 700, file 600", async () => {
+test("data is private: the KI database file is mode 600 (or the JSON file, when sqlite is missing)", async () => {
   await db.databaseInsert("users", { name: "u" });
-  const dir = join(home, ".ki-database");
-  assert.equal(statSync(dir).mode & 0o777, 0o700);
-  assert.equal(statSync(join(dir, "users.json")).mode & 0o777, 0o600);
+  const { engine } = await import("../src/db.mjs");
+  if (engine() === "sqlite") {
+    assert.equal(statSync(join(home, ".ki")).mode & 0o777, 0o700);
+    assert.equal(statSync(join(home, ".ki", "ki.db")).mode & 0o777, 0o600);
+  } else {
+    assert.equal(statSync(join(home, ".ki-database-users.json")).mode & 0o777, 0o600);
+  }
 });
 
-test("a corrupted file is reported, never overwritten", async () => {
-  const f = join(home, ".ki-database", "developer_accounts.json");
-  writeFileSync(f, "{broken");
-  await assert.rejects(db.databaseInsert("developer_accounts", { n: 1 }));
-  assert.equal(readFileSync(f, "utf8"), "{broken");
+test("an older ~/.ki-database file is copied in once and never changed", async () => {
+  const dir = join(home, ".ki-database");
+  mkdirSync(dir, { recursive: true });
+  const old = JSON.stringify([
+    { id: "11111111-1111-4111-8111-111111111111", name: "old-a" },
+    { id: "22222222-2222-4222-8222-222222222222", name: "old-b" },
+  ]);
+  const file = join(dir, "developer_accounts.json");
+  writeFileSync(file, old);
+  const found = await db.databaseFind("developer_accounts"); // first read of this collection: the old file is copied in
+  assert.deepEqual(found.map((d) => d.name), ["old-a", "old-b"]);
+  const added = await db.databaseInsert("developer_accounts", { name: "new" });
+  assert.equal((await db.databaseFind("developer_accounts")).length, 3);
+  assert.equal((await db.databaseGet("developer_accounts", added.id)).name, "new");
+  assert.equal(readFileSync(file, "utf8"), old); // the old file stays exactly as it was
 });
 
 // ---------- over HTTP (/v1/database) ----------
