@@ -5,6 +5,7 @@ import { spawn } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { scopeOf } from "../src/keys.mjs";
 
 const UP = 5981, KI = 5982, KI_NO = 5983;
 const TOKEN = "ki-v1-token";
@@ -17,6 +18,7 @@ const apis = { apis: [
   svc("ei-t"),
   svc("iqai-media", { base_url: `http://127.0.0.1:${UP}/api/v1`, auth: "bearer", env_key: "IQAI_TOKEN" }),
   svc("khoem-ai-api"),
+  svc("ksv-gateway", { auth: "header", auth_header: "x-gateway-token", env_key: "KSV_GATEWAY_TOKEN" }),
 ] };
 let upstream;
 const seen = [];
@@ -26,7 +28,7 @@ const start = async (port, env) => {
   const file = join(home, "apis.json");
   writeFileSync(file, JSON.stringify(apis));
   const p = spawn("node", ["src/server.mjs"], {
-    env: { ...process.env, HOME: home, PORT: String(port), KI_ENV_FILE: "/nonexistent", KI_APIS_FILE: file, KHOEM_API_KEY: "secret-ai", CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", ...env },
+    env: { ...process.env, HOME: home, PORT: String(port), KI_ENV_FILE: "/nonexistent", KI_APIS_FILE: file, KHOEM_API_KEY: "secret-ai", CIDC_TOKEN: "secret-cidc", IQAI_TOKEN: "secret-iqai", KSV_GATEWAY_TOKEN: "secret-ksv", ...env },
     stdio: "ignore",
   });
   procs.push(p);
@@ -135,4 +137,14 @@ test("data: bad names and bodies are refused", async () => {
   assert.equal((await v1("/data/notes/x", { method: "PUT", body: "{oops" })).status, 400);
   assert.equal((await v1("/data/notes/x", { method: "PUT", body: "x".repeat(70 * 1024) })).status, 413);
   assert.equal((await v1("/data/notes/a/b")).status, 400);
+});
+
+test("ksv alias: GET only, KSV token added by KI, device control not reachable, no developer-key scope", async () => {
+  const r = await v1("/ksv", { headers: { "x-gateway-token": "evil" } });
+  assert.equal(r.status, 200);
+  assert.equal((await r.json()).url, "/api");
+  assert.equal(seen.at(-1).headers["x-gateway-token"], "secret-ksv");
+  assert.equal((await json("POST", "/ksv", {})).status, 403);
+  assert.equal((await v1("/ksv/api/ksv")).status, 404);
+  assert.equal(scopeOf("/v1/ksv"), null);
 });

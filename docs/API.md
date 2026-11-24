@@ -363,6 +363,7 @@ One stable front door for apps and the AI UI. Every route needs `x-ki-token`; wi
 | `POST /v1/search`, `POST /v1/retrieve` | CIDC knowledge |
 | `POST /v1/translate`, `GET /v1/languages` | KHOEM_AI language |
 | `POST /v1/math`, `GET /v1/math/functions` | EI-T exact math |
+| `GET /v1/ksv` | KSV gateway service list (`/gw/ksv/api`). Master token only; developer keys cannot use it |
 | `/v1/audio/*`, `/v1/videos/*`, `/v1/media`, `/v1/projects` | IQ-AI |
 | `GET,POST /v1/files` (`?name=`), `GET,DELETE /v1/files/<id>` | KI file store: raw body up to 20 MB, up to 500 files, saved in `~/.ki-files/` |
 | `GET /v1/data`, `GET /v1/data/<collection>`, `GET,PUT,DELETE /v1/data/<collection>/<id>` | KI JSON store: a document is a JSON object up to 64 KB, up to 1000 per collection, saved in `~/.ki-data-<collection>.json` |

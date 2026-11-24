@@ -30,6 +30,7 @@ const EXACT = {
   "/languages": "/gw/lang/api/languages",
   "/math": "/gw/ei-t/v1/call",
   "/math/functions": "/gw/ei-t/v1/functions",
+  "/ksv": "/gw/ksv/api", // read-only service list; master token only (no developer-key scope)
 };
 const PREFIX = {
   "/audio": "/gw/iqai/audio",
@@ -42,7 +43,7 @@ const INDEX = {
   version: 1,
   routes: [
     "GET /v1", "GET /v1/models", "POST /v1/chat", "POST /v1/search", "POST /v1/retrieve",
-    "POST /v1/translate", "GET /v1/languages", "POST /v1/math", "GET /v1/math/functions",
+    "POST /v1/translate", "GET /v1/languages", "POST /v1/math", "GET /v1/math/functions", "GET /v1/ksv",
     "/v1/audio/*", "/v1/videos/*", "/v1/media", "/v1/projects",
     "GET,POST /v1/files", "GET,DELETE /v1/files/<id>",
     "GET /v1/data", "GET /v1/data/<collection>", "GET,PUT,DELETE /v1/data/<collection>/<id>",
