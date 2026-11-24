@@ -12,3 +12,4 @@ ai.sh.bak-*
 package-lock.json
 *.bak-*
 *.bak2-*
+state.json
