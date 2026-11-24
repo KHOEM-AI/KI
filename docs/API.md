@@ -28,7 +28,7 @@ curl http://127.0.0.1:5001/api/registry/apis     # a file from the index, withou
 | `categories.json / protocols.json / locations.json / statuses.json` | shared vocabularies |
 | `languages.json, i18n-km.json, i18n-en.json` | KI texts (keys start with ki.) |
 
-Only entries with a `verified` date were checked against a running service.
+Only entries with a `verified` date were checked against a running service (all 12 enabled entries were re-checked on 2026-11-24 with GET /api/status).
 
 ## 2. KSV live API
 

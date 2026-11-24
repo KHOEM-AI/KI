@@ -16,13 +16,13 @@
         "/api/chat",
         "/api/ksv"
       ],
-      "verified": "2026-11-03",
+      "verified": "2026-11-24",
       "status_seen": 200,
-      "checked": "2026-11-03",
+      "checked": "2026-11-24",
       "verified_routes": [
         "/api"
       ],
-      "note": "GET /api returned 200 on 2026-11-03. /api/ksv/* (device control) comes from source, needs x-gateway-token, not tested."
+      "note": "GET /api returned 200 on 2026-11-24 (also through KI: GET /gw/ksv/api). /api/ksv/* (device control) comes from source, needs the gateway token, not tested and not forwarded by KI."
     },
     {
       "id": "khoem-ai-api",
@@ -40,7 +40,7 @@
         "/api/coverage"
       ],
       "note": "GET routes verified 2026-10-26 (HTTP 200); POST /api/translate not tested",
-      "verified": "2026-10-26",
+      "verified": "2026-11-24",
       "status_seen": 200,
       "verified_routes": [
         "/health",
@@ -49,7 +49,7 @@
         "/api/coverage",
         "/api/translate"
       ],
-      "checked": "2026-10-26"
+      "checked": "2026-11-24"
     },
     {
       "id": "ai-backend",
@@ -63,9 +63,9 @@
       "auth_header": "x-api-key",
       "routes_url": "/api/routes/all",
       "repo": "KHOEM-AI/AI",
-      "verified": "2026-10-26",
+      "verified": "2026-11-24",
       "status_seen": 200,
-      "checked": "2026-10-26"
+      "checked": "2026-11-24"
     },
     {
       "id": "ai-ui",
@@ -77,9 +77,9 @@
       "env_key": "",
       "enabled": true,
       "repo": "KHOEM-AI/AI",
-      "verified": "2026-10-26",
+      "verified": "2026-11-24",
       "status_seen": 200,
-      "checked": "2026-10-26"
+      "checked": "2026-11-24"
     },
     {
       "id": "iqai-media",
@@ -91,9 +91,9 @@
       "env_key": "IQAI_TOKEN",
       "enabled": true,
       "note": "running (401 without token on /media); routes from docs/API.md; AI processing returns 501 | audio, video and projects routes added later, see endpoints.json (not verified here)",
-      "verified": "2026-10-26",
+      "verified": "2026-11-24",
       "status_seen": 200,
-      "checked": "2026-10-26"
+      "checked": "2026-11-24"
     },
     {
       "id": "mqtt-broker",
@@ -113,12 +113,12 @@
       "base_url": "http://127.0.0.1:3000/api",
       "auth": "bearer",
       "repo": "KHOEM-AI/KSV",
-      "note": "port 3000 from .env; GET /api/health and /api/version returned 200 on 2026-11-03; other routes come from source code (login required) and are not tested; the README paths with /api/v1 do not match the code",
+      "note": "port 3000 from .env; GET /api/health returned 200 on 2026-11-24 (database: local FerretDB on :8088). Other routes come from source code (login required) and are not tested; the README paths with /api/v1 do not match the code. FerretDB lacks some aggregate operators ($first, $hour, $cond...), so dashboard and safety endpoints may fail.",
       "enabled": true,
       "health": "/health",
       "status_seen": 200,
-      "checked": "2026-11-03",
-      "verified": "2026-11-03",
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
       "verified_routes": [
         "/health"
       ]
@@ -138,13 +138,13 @@
       ],
       "repo": "KHOEM-AI/EI-T",
       "note": "POST /v1/call with {fn, args}; function whitelist, body max 64KB; listens on 127.0.0.1 only",
-      "verified": "2026-10-29",
+      "verified": "2026-11-24",
       "status_seen": 200,
       "verified_routes": [
         "/health",
         "/v1/call"
       ],
-      "checked": "2026-10-29"
+      "checked": "2026-11-24"
     },
     {
       "id": "ki-api",
@@ -170,7 +170,13 @@
         "/gw"
       ],
       "repo": "KHOEM-AI/KI",
-      "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz; /v1 is the versioned front door (see docs/API.md)"
+      "note": "from src/server.mjs and tests; token needed on every route except GET /api/healthz; /v1 is the versioned front door (see docs/API.md)",
+      "status_seen": 200,
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
+      "verified_routes": [
+        "/api/healthz"
+      ]
     },
     {
       "id": "cai-scan",
@@ -181,7 +187,13 @@
       "auth": "none",
       "env_key": "",
       "enabled": true,
-      "note": "serve.py proxies /ki/* to KI with x-ki-token (allowlist: healthz, scans, scan); from source, not tested"
+      "note": "serve.py proxies /ki/* to KI with x-ki-token (allowlist: healthz, scans, scan); from source, not tested",
+      "status_seen": 200,
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
+      "verified_routes": [
+        "/"
+      ]
     },
     {
       "id": "cai-share",
@@ -192,7 +204,13 @@
       "auth": "none",
       "env_key": "",
       "enabled": true,
-      "note": "port from CAI/ai.sh; routes not checked"
+      "note": "port from CAI/ai.sh; routes not checked",
+      "status_seen": 200,
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
+      "verified_routes": [
+        "/"
+      ]
     },
     {
       "id": "mik-3d",
@@ -203,7 +221,13 @@
       "auth": "none",
       "env_key": "",
       "enabled": true,
-      "note": "port from KSV/ai.sh; the /ki proxy on this port is blocked on purpose"
+      "note": "port from KSV/ai.sh; the /ki proxy on this port is blocked on purpose",
+      "status_seen": 200,
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
+      "verified_routes": [
+        "/"
+      ]
     },
     {
       "id": "cidc-api",
@@ -230,6 +254,12 @@
         "/api/cidc/statistics",
         "/api/cidc/search",
         "/api/cidc/retrieve"
+      ],
+      "status_seen": 200,
+      "checked": "2026-11-24",
+      "verified": "2026-11-24",
+      "verified_routes": [
+        "/api/cidc/health"
       ]
     }
   ]
