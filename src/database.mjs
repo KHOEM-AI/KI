@@ -61,7 +61,12 @@ function oldDocuments(name) {
 async function readCollection(name) {
   validateCollection(name);
   const store = storeFor(name);
-  let docs = store.load(null);
+  let docs;
+  try {
+    docs = store.loadStrict(null); // unreadable value = error, never "empty" (it must not be overwritten)
+  } catch {
+    throw new Error("DATABASE_CORRUPTED");
+  }
   if (docs === null) {
     docs = oldDocuments(name);
     if (docs.length) store.save(docs); // copied in once; the old file stays

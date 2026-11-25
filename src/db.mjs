@@ -77,6 +77,13 @@ export function makeStore(name) {
         return existsSync(file()) ? JSON.parse(readFileSync(file(), "utf8")) : fallback;
       } catch { return fallback; }
     },
+    // Like load(), but a stored value that cannot be read throws instead of becoming the fallback,
+    // so callers can refuse to overwrite damaged data.
+    loadStrict(fallback = []) {
+      const d = open();
+      if (d) { const row = d.prepare("SELECT value FROM kv WHERE name = ?").get(name); return row ? JSON.parse(row.value) : fallback; }
+      return existsSync(file()) ? JSON.parse(readFileSync(file(), "utf8")) : fallback;
+    },
     save(value) {
       const d = open();
       const text = JSON.stringify(value);

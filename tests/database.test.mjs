@@ -95,6 +95,26 @@ test("an older ~/.ki-database file is copied in once and never changed", async (
   assert.equal(readFileSync(file, "utf8"), old); // the old file stays exactly as it was
 });
 
+test("a damaged stored value is reported, never overwritten", async () => {
+  const { existsSync } = await import("node:fs");
+  const dbFile = join(home, ".ki", "ki.db");
+  if (existsSync(dbFile)) {
+    const { DatabaseSync } = await import("node:sqlite");
+    const d1 = new DatabaseSync(dbFile);
+    d1.prepare("INSERT INTO kv(name, value, updated) VALUES('database-integrations', '{broken', 'x') ON CONFLICT(name) DO UPDATE SET value = excluded.value").run();
+    d1.close();
+    await assert.rejects(db.databaseInsert("integrations", { n: 1 }), (e) => e.message === "DATABASE_CORRUPTED");
+    const d2 = new DatabaseSync(dbFile);
+    assert.equal(d2.prepare("SELECT value FROM kv WHERE name = 'database-integrations'").get().value, "{broken");
+    d2.close();
+  } else { // JSON engine
+    const f = join(home, ".ki-database-integrations.json");
+    writeFileSync(f, "{broken");
+    await assert.rejects(db.databaseInsert("integrations", { n: 1 }), (e) => e.message === "DATABASE_CORRUPTED");
+    assert.equal(readFileSync(f, "utf8"), "{broken");
+  }
+});
+
 // ---------- over HTTP (/v1/database) ----------
 const call = (path, { method = "GET", body, headers = {} } = {}) =>
   fetch(`http://127.0.0.1:${KI}${path}`, {
